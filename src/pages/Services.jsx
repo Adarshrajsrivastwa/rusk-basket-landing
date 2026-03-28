@@ -103,7 +103,7 @@ const whyChoose = [
 
 const stats = [
   { value: "10K+", label: "Orders Delivered" },
-  { value: "500+", label: "Products Listed" },
+  { value: "2500+", label: "Products Listed" },
   { value: "24/7", label: "Support" },
   { value: "4.9★", label: "Customer Rating" },
 ];

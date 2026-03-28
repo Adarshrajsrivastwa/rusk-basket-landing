@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -13,26 +14,6 @@ const contactInfo = [
     titleColor: "#ea580c",
     bg: "#fff7ed",
     link: "mailto:info.rushbaskets@gmail.com",
-  },
-  {
-    icon: "📞",
-    title: "Call Us",
-    detail: "+91 84496 67337",
-    subDetail: "Mon – Sun, 24 Hours",
-    borderColor: "#22c55e",
-    titleColor: "#16a34a",
-    bg: "#f0fdf4",
-    link: "tel:+918449667337",
-  },
-  {
-    icon: "📍",
-    title: "Visit Us",
-    detail: "Hathras, Uttar Pradesh, India – 204101",
-    subDetail: "Head Office",
-    borderColor: "#3b82f6",
-    titleColor: "#2563eb",
-    bg: "#eff6ff",
-    link: "#location",
   },
 ];
 
@@ -67,12 +48,19 @@ const faqs = [
 ];
 
 const socialLinks = [
-  { icon: "📘", name: "Facebook", color: "#1877f2", link: "#" },
-  { icon: "📸", name: "Instagram", color: "#e1306c", link: "#" },
-  { icon: "🐦", name: "Twitter", color: "#1da1f2", link: "#" },
-  { icon: "💼", name: "LinkedIn", color: "#0077b5", link: "#" },
+  {
+    icon: <FaFacebook />,
+    name: "Facebook",
+    color: "#1877f2",
+    link: "https://www.facebook.com/share/1H7pvtXUFV/",
+  },
+  {
+    icon: <FaInstagram />,
+    name: "Instagram",
+    color: "#e1306c",
+    link: "https://www.instagram.com/rushbaskets?igsh=aWtsdmJ1Y2VocDB3",
+  },
 ];
-
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Contact() {
@@ -390,7 +378,7 @@ export default function Contact() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
               {contactInfo.map((info, i) => (
                 <a
                   key={info.title}
@@ -621,7 +609,7 @@ export default function Contact() {
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { value: "10K+", label: "Orders Delivered" },
-              { value: "500+", label: "Products Listed" },
+              { value: "2500+", label: "Products Listed" },
               { value: "24/7", label: "Support Available" },
               { value: "4.9★", label: "Customer Rating" },
             ].map(({ value, label }) => (

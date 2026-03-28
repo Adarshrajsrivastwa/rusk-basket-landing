@@ -1,32 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/image 1.png";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   const socialLinks = [
     {
-      icon: "📘",
+      icon: <FaFacebook />,
       name: "Facebook",
-      color: "from-blue-600 to-blue-700",
-      link: "#",
+      color: "#1877f2",
+      link: "https://www.facebook.com/share/1H7pvtXUFV/",
     },
     {
-      icon: "📸",
+      icon: <FaInstagram />,
       name: "Instagram",
-      color: "from-pink-500 to-purple-600",
-      link: "#",
-    },
-    {
-      icon: "🐦",
-      name: "Twitter",
-      color: "from-sky-400 to-blue-500",
-      link: "#",
-    },
-    {
-      icon: "💼",
-      name: "LinkedIn",
-      color: "from-blue-700 to-blue-800",
-      link: "#",
+      color: "#e1306c",
+      link: "https://www.instagram.com/rushbaskets?igsh=aWtsdmJ1Y2VocDB3",
     },
   ];
 
@@ -278,6 +267,7 @@ export default function Footer() {
                 {[
                   { to: "/privacy", label: "🔒 Privacy Policy" },
                   { to: "/terms", label: "📄 Terms & Conditions" },
+                  { to: "/refund", label: "📄 Refund & Return Policy " },
                 ].map(({ to, label }) => (
                   <li key={to}>
                     <Link
@@ -328,14 +318,14 @@ export default function Footer() {
 
             {/* Contact */}
             <div className="section-card opacity-0 animate-fadeInUp delay-400">
-              <h3
+              {/* <h3
                 className="text-base font-bold mb-3 heading-line"
                 style={{ color: "#fde68a" }}
               >
                 Contact Us
-              </h3>
+              </h3> */}
               <ul className="space-y-3 text-xs footer-body-font">
-                <li className="contact-item">
+                {/* <li className="contact-item">
                   <span className="text-orange-300">📞 Phone:</span>{" "}
                   <a
                     href="tel:+918449667337"
@@ -343,7 +333,7 @@ export default function Footer() {
                   >
                     +91 84496 67337
                   </a>
-                </li>
+                </li> */}
                 <li className="contact-item">
                   <span className="text-orange-300">📧 Email:</span>{" "}
                   <a
@@ -353,12 +343,12 @@ export default function Footer() {
                     info.rushbaskets@gmail.com
                   </a>
                 </li>
-                <li className="contact-item">
+                {/* <li className="contact-item">
                   <span className="text-orange-300">📍 Address:</span>{" "}
                   <span className="text-orange-100 ml-1">
                     Hathras, Uttar Pradesh, India — 204101
                   </span>
-                </li>
+                </li> */}
               </ul>
 
               {/* Social icons */}

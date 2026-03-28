@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy"; // 👈 Add this import
 import TermsCondition from "./pages/TermsCondition";
+import Refund from "./pages/Refund.jsx";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />{" "}
+        <Route path="/refund" element={<Refund />} />
         {/* 👈 Privacy Policy Route */}
       </Routes>
 

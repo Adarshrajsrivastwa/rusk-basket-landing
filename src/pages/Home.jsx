@@ -273,7 +273,7 @@ const features = [
 
 const stats = [
   { value: "10K+", label: "Orders Delivered" },
-  { value: "500+", label: "Products Listed" },
+  { value: "2500+", label: "Products Listed" },
   { value: "24/7", label: "Support" },
   { value: "4.9★", label: "Customer Rating" },
 ];
@@ -284,7 +284,6 @@ const groceryItems = [
   { emoji: "🥛", name: "Dairy" },
   { emoji: "🌾", name: "Grains" },
   { emoji: "🧴", name: "Personal Care" },
-  { emoji: "🍗", name: "Meat & Fish" },
 ];
 
 export default function Home() {
@@ -637,13 +636,7 @@ export default function Home() {
                   border: "#bfdbfe",
                   text: "#1d4ed8",
                 },
-                {
-                  emoji: "🍗🥩🐟",
-                  label: "Meat & Seafood",
-                  bg: "#fef2f2",
-                  border: "#fecaca",
-                  text: "#dc2626",
-                },
+
                 {
                   emoji: "🌾🍞🥐",
                   label: "Bakery & Grains",
