@@ -1,398 +1,910 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+const sections = [
+  {
+    id: "eligibility",
+    icon: "✅",
+    title: "Return Eligibility",
+    border: "#f97316",
+    titleColor: "text-orange-600",
+    content: [
+      "Items are eligible for return within 24 hours of delivery if they are damaged, defective, incorrectly delivered, or significantly different from what was ordered. Photographic evidence may be required to process your return request.",
+      "Perishable goods such as fresh vegetables, fruits, dairy products, and bakery items are generally not eligible for return unless they are delivered in a spoiled, damaged, or incorrect condition at the time of delivery.",
+      "Non-perishable packaged goods, personal care products, and household items may be returned within 48 hours of delivery provided they are unused, unopened, and in their original packaging with all seals intact.",
+      "Items purchased during special sales, clearance events, or with promotional discount codes may have different return eligibility — please check the specific offer terms at the time of purchase.",
+    ],
+  },
+  {
+    id: "non-returnable",
+    icon: "🚫",
+    title: "Non-Returnable Items",
+    border: "#ef4444",
+    titleColor: "text-red-600",
+    content: [
+      "Fresh Produce: Vegetables, fruits, herbs, and other fresh produce cannot be returned once delivered, except in cases of spoilage or incorrect delivery confirmed at the time of receipt.",
+      "Opened or Used Products: Any item that has been opened, partially used, or whose original seal has been broken is not eligible for return unless it is found to be defective upon first use.",
+      "Temperature-Sensitive Items: Frozen foods, ice creams, and chilled products that require cold chain management cannot be returned due to health and safety regulations.",
+      "Custom or Special Orders: Items specifically ordered or customized at your request, such as custom cakes, special cuts of meat, or made-to-order products, cannot be returned.",
+    ],
+  },
+  {
+    id: "refund-process",
+    icon: "💰",
+    title: "Refund Process",
+    border: "#22c55e",
+    titleColor: "text-green-600",
+    content: [
+      "Once your return request is approved, refunds are processed within 5–7 business days. The refund will be credited to the original payment method used at the time of purchase.",
+      "For Cash on Delivery (COD) orders, refunds are issued as RushBaskets Wallet Credits, which can be used on your next purchase. Bank transfers for COD refunds may take up to 7–10 business days.",
+      "UPI, debit/credit card, and net banking refunds are subject to additional processing time by your bank or payment provider, typically 3–5 business days after we initiate the refund.",
+      "You will receive an email and app notification at each stage of the refund process — from request approval to final credit — so you are always kept informed.",
+    ],
+  },
+  {
+    id: "how-to-return",
+    icon: "📦",
+    title: "How to Initiate a Return",
+    border: "#3b82f6",
+    titleColor: "text-blue-600",
+    content: [
+      "Step 1 — Report the Issue: Open the RushBaskets app, go to 'My Orders', select the relevant order, and tap 'Report an Issue' or 'Request Return' within the eligible return window.",
+      "Step 2 — Describe the Problem: Select the reason for your return from the dropdown menu and provide a brief description. Attach clear photographs of the damaged, defective, or incorrect item if applicable.",
+      "Step 3 — Schedule Pickup: For eligible physical returns, our delivery partner will schedule a pickup from your address within 24–48 hours of approval. Ensure the item is in its original packaging.",
+      "Step 4 — Refund Confirmation: Once the item is picked up and verified at our warehouse, your refund will be processed. You'll receive a confirmation notification within 24 hours of item verification.",
+    ],
+  },
+  {
+    id: "replacement",
+    icon: "🔄",
+    title: "Replacements",
+    border: "#a855f7",
+    titleColor: "text-purple-600",
+    content: [
+      "In many cases, we offer a free replacement as an alternative to a refund. If you received a damaged or incorrect item, you can choose between a refund or an immediate replacement delivered at no extra charge.",
+      "Replacements are subject to product availability. If the original item is out of stock, we will offer you a full refund or allow you to choose a similar alternative product at the same price.",
+      "Replacement deliveries are prioritized and typically dispatched within 24 hours of your request being approved. You will receive a dedicated tracking link for your replacement order.",
+      "If a replacement order also arrives with issues, you are entitled to a full refund. Please contact our support team at info.rushbaskets@gmail.com with details and we'll resolve it immediately.",
+    ],
+  },
+  {
+    id: "cancellation",
+    icon: "❌",
+    title: "Order Cancellation",
+    border: "#f97316",
+    titleColor: "text-orange-600",
+    content: [
+      "Orders can be cancelled free of charge within 30 minutes of placement, before they are confirmed and dispatched by our fulfillment team. Use the 'Cancel Order' option in the app under 'My Orders'.",
+      "Once an order has been picked up by our delivery partner, cancellation is no longer possible. In such cases, you may initiate a return after delivery if the item meets return eligibility criteria.",
+      "For prepaid orders that are cancelled within the allowed window, a full refund is processed within 3–5 business days to your original payment method.",
+      "RushBaskets reserves the right to cancel orders due to unavailability of products, delivery constraints, suspected fraudulent activity, or pricing errors. In all such cases, a full refund will be issued immediately.",
+    ],
+  },
+  {
+    id: "damaged-delivery",
+    icon: "📸",
+    title: "Damaged or Wrong Delivery",
+    border: "#22c55e",
+    titleColor: "text-green-600",
+    content: [
+      "If your order arrives damaged or you receive incorrect items, please do not accept the delivery if the damage is visible externally. Report the issue to the delivery agent immediately and contact our support team.",
+      "If damage is discovered after delivery, report it within 24 hours through the app with photographs. We take full responsibility for items damaged during transit and will arrange a replacement or refund promptly.",
+      "For wrong items delivered, we will arrange an immediate pickup of the incorrect item and either deliver the correct item within 24 hours or process a full refund, whichever you prefer.",
+      "Our quality team reviews all damage and wrong-delivery reports to improve our packaging and logistics processes. Your feedback directly helps us serve you better.",
+    ],
+  },
+  {
+    id: "wallet-credits",
+    icon: "💳",
+    title: "Wallet Credits & Cashback",
+    border: "#3b82f6",
+    titleColor: "text-blue-600",
+    content: [
+      "As a faster alternative to bank refunds, RushBaskets offers instant Wallet Credits that are credited to your account within 2 hours of return approval. These can be used on any future order.",
+      "Wallet Credits do not expire and can be used for partial or full payment on any purchase across the RushBaskets platform. They are non-transferable and cannot be withdrawn as cash.",
+      "Cashback offers earned on original orders are non-refundable if the order is returned. However, the full product amount excluding cashback benefits will be refunded.",
+      "If your account is closed, any remaining Wallet Credits will be forfeited. Please ensure you use your credits before requesting account deletion.",
+    ],
+  },
+];
+
+const quickLinks = [
+  { label: "Eligibility", icon: "✅", id: "eligibility" },
+  { label: "Non-Returnable", icon: "🚫", id: "non-returnable" },
+  { label: "Refund Process", icon: "💰", id: "refund-process" },
+  { label: "How to Return", icon: "📦", id: "how-to-return" },
+  { label: "Replacements", icon: "🔄", id: "replacement" },
+  { label: "Cancellation", icon: "❌", id: "cancellation" },
+  { label: "Damaged Items", icon: "📸", id: "damaged-delivery" },
+  { label: "Wallet Credits", icon: "💳", id: "wallet-credits" },
+];
+
+const steps = [
+  {
+    step: "01",
+    icon: "📱",
+    title: "Open the App",
+    desc: "Go to My Orders and select the order with an issue.",
+  },
+  {
+    step: "02",
+    icon: "📸",
+    title: "Report & Upload",
+    desc: "Describe the problem and attach photos of the item.",
+  },
+  {
+    step: "03",
+    icon: "🚚",
+    title: "Schedule Pickup",
+    desc: "Our partner picks up the item within 24–48 hours.",
+  },
+  {
+    step: "04",
+    icon: "💰",
+    title: "Get Refunded",
+    desc: "Refund or replacement processed within 5–7 business days.",
+  },
+];
 
 export default function RefundPolicy() {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("eligibility");
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const sections = [
-    {
-      icon: "💳",
-      title: "1. Payment Processing",
-      color: "#ff7b1d",
-      bg: "#fff7ed",
-      border: "#fed7aa",
-      content: [
-        "1.1. Subject to Part A: General Terms and Conditions in conjunction with Part I: Specific Terms for Online Payment Aggregation Services, Razorpay shall facilitate collection of online payments for products/services sold by You. You agree that where any settlement amount is less than Rupee 1, Razorpay shall endeavour to, but is not obligated to You, make such settlement.",
-        "1.2. Subject to Clause 2 and 3 of Part I: Specific Terms for Online Payment Aggregation Services, Razorpay shall settle the Transaction Amount (net of Permissible Deductions) into your account as per agreed timelines in compliance with the PA/PG guidelines. The Merchant acknowledges and agrees that the foregoing is subject to credit to / receipt of funds by Razorpay in the Escrow Account from acquiring banks or gateways.",
-        "1.3. If Razorpay settles the Transaction Amount under Part A: General Terms and Conditions or Part B: Specific Terms and Conditions, at an earlier time than agreed above, Razorpay shall have an absolute right to recover the Transaction Amount forthwith if the same is not received in the Escrow Account within three (3) Escrow Bank Working Days following the date of the Transaction for any reason whatsoever.",
-        "1.4. Razorpay shall have an absolute right to place limits on the Transaction value.",
-        '1.5. You may choose to purchase Fee Credits from Razorpay in respect of the Services being rendered under Part I: Specific Terms for Online Payment Aggregation Services. It is agreed that in respect of each Transaction, Razorpay shall be entitled to deduct an amount equivalent to Razorpay fees along with applicable taxes from the Fee Credit. You agree that if sufficient funds are not available in the Fee Credits, then Razorpay shall be entitled to deduct Razorpay fees along with applicable taxes from the Transaction Amount. "Fee Credits" are the credits using which You may receive the full settlement amount without any fee deduction. For example, if You have a Fee Credit of INR 100 then all the Transactions will be settled in full and the fees for these payments will be deducted from the Fee Credit of INR 100.',
-        "1.6. You agree that Razorpay shall be entitled, at its sole discretion, to recover any amounts from You that are charged to Razorpay and/or debited by Facility Providers from accounts maintained by You or any reason attributable to the provision of Services to You by way of deduction from (i) the Transaction Amount to be settled to You and/or (ii) any of Your other funds held by Razorpay in the course of providing the Services. In the event such set-off or recovery does not fully reimburse Razorpay for the liability owed, You shall pay Razorpay a sum equal to any shortfall thereof.",
-        "1.7. You hereby acknowledge and agree that in case of reversal of Transaction Amount to Razorpay's Escrow Account due to any reason, including but not limited to your bank (where your settlement account resides) rejecting acceptance of the Transaction Amount for any reason whatsoever, Razorpay may refund the monies to the source account from which it was received.",
-        "1.8. Notwithstanding anything set forth in the Terms, You acknowledge, agree and affirm that in the event Razorpay in its absolute discretion determines that, for reasons including but not limited to internal decisions or regulatory mandates, it is not feasible or suitable to settle the funds held in the Razorpay's Escrow Account to you, Razorpay reserves the right to withhold such settlement and after giving prior notice to you, shall refund the said amount back to the source account from which it was received.",
-        "1.9. Merchant hereby consents and confirms that, where any bank as a payment aggregator/payment facilitator takes Razorpay services for processing settlement of funds for such Merchant, acting as Razorpay's partner bank, the Merchant authorizes Razorpay to make settlements to such partner bank or any third party, whereby Merchant gives its instructions to such effect either directly to Razorpay or to such partner bank which is made available to Razorpay by such partner bank. Additionally, the Merchant understands and agrees that Razorpay may carry out KYC procedure for the said Merchant through any permissible means.",
-      ],
-    },
-    {
-      icon: "🔁",
-      title: "2. Chargebacks",
-      color: "#1d4ed8",
-      bg: "#eff6ff",
-      border: "#bfdbfe",
-      content: [
-        '2.1. If a Facility Provider communicates to Razorpay the receipt of a Chargeback Request, You will be notified of the Chargeback. You agree that liability for Chargeback, whether domestic or international, under the Terms solely rests with You. You further agree that it is Your sole discretion whether to avail non-3D secure services or not and additional terms for the same will apply as set out in the Merchant dashboard. Subject to availability of funds, Razorpay upon receipt of a Chargeback Request shall forthwith deduct Chargeback Amount from the Transaction Amounts, which may be used, based on the decision of the Facility Provider, either to a) process Chargeback in favour of the customer or b) credit to You. For the avoidance of doubt, Razorpay shall be entitled to deduct the Chargeback Amount upon receiving a Chargeback claim. You shall be entitled to furnish to Razorpay documents and information ("Chargeback Documents") pertaining to the Transaction associated with the Chargeback Request in order to substantiate (i) the completion of the aforesaid Transaction; and/or (ii) delivery of goods/services sought by the customer pursuant to the said Transaction. You shall furnish the Chargeback Documents within three (3) calendar days (or such other period specified by the Facility Provider) of receiving notification of the Chargeback Request.',
-        "2.2. You agree that (i) if You are unable to furnish Chargeback Documents; and/or (ii) the Facility Provider is not satisfied with the Chargeback Documents furnished by You, then the Facility Provider shall be entitled to order Razorpay to effect a reversal of the debit of the Chargeback Amount associated with the Chargeback such that the said Chargeback Amount is credited to the customer's Payment Instrument.",
-        "2.3. Notwithstanding anything in these Terms, if the Facility Providers charge the Chargeback Amount from Razorpay then You agree and acknowledge that Razorpay is entitled to recover such Chargeback Amount from You by way of deduction from (i) the Transaction Amounts to be settled to You and (ii) any of Your other funds held by Razorpay in the course of providing the Services. Provided however, if the available Transaction Amounts or other funds are insufficient for deduction of the Chargeback Amount, then Razorpay is entitled to issue a debit note seeking reimbursement of the Chargeback Amount. You shall reimburse the Chargeback Amount within seven (7) days of receipt of the debit note.",
-        "2.4. On the issuance of notice of termination under the Terms, Razorpay reserves the right to withhold from each settlement made during the notice period, a sum computed based on a Stipulated Percentage (defined hereinbelow) for a period of one hundred and twenty (120) days (\"Withholding Term\") from the date of termination of these Terms. The sums so withheld shall be utilized towards settlement of Chargebacks. After processing such Chargebacks, Razorpay shall transfer the unutilized amounts, if any, to You forthwith upon completion of the Withholding Term. The 'Stipulated Percentage' is the proportion of the Chargeback Amounts out of the total Transaction Amounts settled during the subsistence of these Terms.",
-        "2.5. Notwithstanding anything in the Terms, if the amount withheld pursuant to clause 2.4 above is insufficient to settle Chargebacks Amounts received during the Withholding Term, then Razorpay is entitled to issue a debit note seeking reimbursement of the Chargeback Amount. You shall reimburse the Chargeback Amount within seven (7) days of receipt of the debit note.",
-        "2.6. The following applies for Chargebacks associated with EMI products which are supported by Facility Providers. For any loan cancellation requests, You need to respond to Razorpay within seven (7) working days with a suitable response. If loan is to be cancelled, then the same needs to be informed to Razorpay and if cancellation request is to be declined then You need to provide proof of delivery and justification. For loans which would get cancelled on the basis of Your confirmation, the amount would be recovered from the daily settlement.",
-      ],
-    },
-    {
-      icon: "↩️",
-      title: "3. Refunds",
-      color: "#16a34a",
-      bg: "#f0fdf4",
-      border: "#bbf7d0",
-      content: [
-        "3.1. You agree and acknowledge that subject to availability of funds received in the Escrow Account, You are entitled to effect Refunds at Your sole discretion.",
-        "3.2. You further agree and acknowledge that initiation of Refunds is at Your discretion and Razorpay shall process a Refund only upon initiation of the same on the Platform.",
-        "3.3. All Refunds initiated by You shall be routed to the same payment method through which the Transaction was processed.",
-        "3.4. You agree that Razorpay fees shall always be applicable and payable by You on each Transaction irrespective of whether You have refunded the same to Your customer either through normal channels of refunds or through the instant refund service of Razorpay affiliate (if availed).",
-        "3.5. You acknowledge and agree that for payments that are late authorized but not captured by You, Razorpay may initiate auto-refund to the customer within five (5) days.",
-      ],
-    },
-    {
-      icon: "🚨",
-      title: "4. Fraudulent Transactions",
-      color: "#dc2626",
-      bg: "#fef2f2",
-      border: "#fecaca",
-      content: [
-        '4.1. Subject to clause 2.1 and 2.2 of this Part I: Specific Terms for Online Payment Aggregation Services, if Razorpay is intimated, by a Facility Provider, that a customer has reported an unauthorised debit of the customer\'s Payment Instrument ("Fraudulent Transaction"), then in addition to its rights under clause 16 of Part A: General Terms and Conditions, Razorpay shall be entitled to suspend settlements to You during the pendency of inquiries, investigations and resolution thereof by the Facility Providers.',
-        "4.2. If the amount in respect of the Fraudulent Transaction has already been settled to You pursuant to these Terms, any dispute arising in relation to the said Fraudulent Transaction, following settlement, shall be resolved in accordance with the RBI's notification DBR.No.Leg.BC.78/09.07.005/2017-18, dated July 6, 2017 read with RBI's notification DBOD. LEG. BC 86/09.07.007/2001-02 dated April 8, 2002 and other notifications, circulars and guidelines issued by the RBI in this regard from time to time.",
-        "4.3. Subject to clause 4.2 above, if the Fraudulent Transaction results in a Chargeback, then such Chargeback shall be resolved in accordance with the provisions set out in the Terms.",
-        "4.4. You acknowledge that Razorpay shall not be responsible for any liability arising in respect of Fraudulent Transactions whether it is an international or a domestic transaction.",
-        "4.5. You shall be liable in the event of breach of the fraud amount thresholds as provided under the NPCI guideline on 'Fraud liability guidelines on UPI transactions' NPCI/2022-23/RMD/001. You hereby understand and agree that the decision of the NPCI or the concerned acquiring bank, as the case may be, shall be final and binding.",
-      ],
-    },
-    {
-      icon: "📌",
-      title: "5. General",
-      color: "#7e22ce",
-      bg: "#fdf4ff",
-      border: "#e9d5ff",
-      content: [
-        "5.1. In the event of any conflict between Part A: General Terms and Conditions and Part B: Specific Terms and Conditions, Part B: Specific Terms and Conditions shall prevail. To the maximum extent feasible, they shall be construed harmoniously.",
-        "5.2. Capitalised terms used but not defined in this Part I: Specific Terms for Online Payment Aggregation Services of Part B shall have the meaning ascribed to such terms in Part A: General Terms and Conditions.",
-        "5.3. Clauses 2 and 4 of Part I: Specific Terms for Online Payment Aggregation Services of Part B shall survive the termination of the Terms.",
-        "5.4. You hereby consent for Razorpay to share Your information/data, including activity related information and personal information, with its Affiliates, for (i) the Affiliates to facilitate access to/market along with Razorpay, such products and services as the Affiliates may deem You eligible; and/or (ii) to share such information with Facility Providers (such as banks, NBFCs) associated with the Affiliates, for such Facility Providers to assess Your eligibility for the proposed products and services. To revoke or modify such consent please reach out to support.razorpay.com.",
-        "5.5. You hereby agree and confirm that in case You have opted for a loan/line of credit or any other similar product through Razorpay's affiliates/group companies, and its Facility Providers/lending partners, You hereby acknowledge, confirm, agree and provide unconditional consent that Razorpay may facilitate its affiliates/group companies which reserve the right to recover the outstanding dues from the positive balance as maintained by You with Razorpay. Depending on the type of loan product opted by You: (i) where NACH mandate provided by You as the first mode of repayment fails due to insufficient balance, recovery shall happen from your positive balance maintained with Razorpay, provided You have not completed repayment to lending partner of Razorpay affiliate/group companies through any other mode; or (ii) where your positive balance is first mode of repayment, recovery shall happen from the same.",
-        "5.6. You hereby agree that Razorpay may deduct amounts from Your settlement account in accordance with instructions provided by You to Razorpay. Razorpay may first deduct its fees and other liabilities, including but not limited to chargebacks, fines, and penalties followed by other deductions, based on the chronological order of the instructions received from You.",
-      ],
-    },
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = document.documentElement;
+      const scrolled = el.scrollTop;
+      const total = el.scrollHeight - el.clientHeight;
+      setScrollProgress(total > 0 ? (scrolled / total) * 100 : 0);
+      for (const s of sections) {
+        const elem = document.getElementById(s.id);
+        if (elem && elem.getBoundingClientRect().top <= 140)
+          setActiveSection(s.id);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const quickPoints = [
-    { icon: "⏱️", label: "Refund Timeline", value: "5–7 Business Days" },
-    { icon: "💰", label: "Refund Method", value: "Original Payment Source" },
-    { icon: "📩", label: "Support Email", value: "info.rushbaskets@gmail.com" },
-    { icon: "🏦", label: "Auto-Refund", value: "Within 5 Days (uncaptured)" },
-  ];
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-        .refund-page { font-family: 'Poppins', sans-serif; }
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #fff; }
 
-        .policy-card {
-          border-radius: 14px;
-          padding: 24px 28px;
-          border-left: 5px solid;
-          transition: box-shadow 0.2s, transform 0.2s;
-        }
-        .policy-card:hover {
-          box-shadow: 0 6px 24px rgba(0,0,0,0.09);
-          transform: translateY(-2px);
-        }
-
-        .clause-item {
-          padding: 10px 0;
-          border-bottom: 1px dashed rgba(0,0,0,0.08);
-          font-size: 0.85rem;
-          line-height: 1.75;
-          color: #374151;
-        }
-        .clause-item:last-child { border-bottom: none; }
-
-        .clause-number {
-          font-weight: 700;
-          margin-right: 6px;
-          flex-shrink: 0;
+        .progress-bar {
+          position: fixed; top: 0; left: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #ff7b1d, #fde68a);
+          z-index: 9999;
+          transition: width 0.1s linear;
+          border-radius: 0 2px 2px 0;
         }
 
-        .quick-card {
-          border-radius: 14px;
-          padding: 18px 20px;
-          background: #fff;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-          border-top: 4px solid #ff7b1d;
-          text-align: center;
+        .hero-bg { background: linear-gradient(135deg, #ff7b1d 0%, #e06010 60%, #c2410c 100%); }
+
+        .section-tag {
+          display: inline-block;
+          background: #ffedd5; color: #ff7b1d;
+          border-radius: 9999px; padding: 4px 16px;
+          font-size: 0.8rem; font-weight: 600;
+          letter-spacing: 0.05em; margin-bottom: 12px;
         }
 
-        .contact-btn {
-          background: #ff7b1d;
-          color: #fff;
-          font-weight: 700;
-          border-radius: 9999px;
-          padding: 12px 32px;
-          font-size: 1rem;
-          border: none;
-          cursor: pointer;
+        .btn-primary {
+          background: #ff7b1d; color: #fff; font-weight: 700;
+          border-radius: 9999px; padding: 12px 28px; font-size: 0.95rem;
           transition: background 0.2s, box-shadow 0.2s;
           box-shadow: 0 4px 16px rgba(255,123,29,0.3);
+          display: inline-flex; align-items: center; gap: 8px;
+          cursor: pointer; border: none; text-decoration: none;
         }
-        .contact-btn:hover {
-          background: #e06010;
-          box-shadow: 0 6px 24px rgba(255,123,29,0.45);
+        .btn-primary:hover { background: #e06010; box-shadow: 0 6px 24px rgba(255,123,29,0.4); }
+
+        .btn-outline-white {
+          background: transparent; color: #fff; font-weight: 600;
+          border-radius: 9999px; padding: 11px 28px; font-size: 0.95rem;
+          border: 2px solid rgba(255,255,255,0.7);
+          transition: background 0.2s;
+          display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+        }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: #fff; }
+
+        .toc-nav {
+          background: #fff; border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+          padding: 20px; position: sticky; top: 24px;
+          border: 1px solid #fed7aa;
         }
 
-        .section-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #ffedd5;
-          color: #ff7b1d;
-          border-radius: 9999px;
-          padding: 4px 14px;
-          font-size: 0.75rem;
-          font-weight: 700;
-          letter-spacing: 0.05em;
-          margin-bottom: 24px;
+        .toc-link {
+          display: flex; align-items: center; gap: 10px;
+          padding: 9px 12px; border-radius: 10px; cursor: pointer;
+          transition: background 0.15s; font-size: 0.82rem; font-weight: 500;
+          color: #374151; margin-bottom: 2px; border: none;
+          background: transparent; width: 100%; text-align: left;
+        }
+        .toc-link:hover { background: #fff7ed; color: #ff7b1d; }
+        .toc-link.active { background: #ffedd5; color: #ff7b1d; font-weight: 600; }
+        .toc-dot { width: 6px; height: 6px; border-radius: 50%; background: #d1d5db; flex-shrink: 0; transition: background 0.15s; }
+        .toc-link.active .toc-dot { background: #ff7b1d; }
+
+        .policy-card {
+          background: #fff; border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+          padding: 36px; border-top: 4px solid;
+          transition: box-shadow 0.2s; margin-bottom: 24px;
+        }
+        .policy-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.11); }
+
+        .policy-point { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+        .policy-point:last-child { margin-bottom: 0; }
+        .policy-bullet {
+          width: 28px; height: 28px; border-radius: 50%;
+          background: #fff7ed; border: 2px solid #fed7aa;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0; font-size: 0.7rem; font-weight: 700;
+          color: #ff7b1d; margin-top: 2px;
+        }
+        .policy-point p { margin: 0; color: #4b5563; font-size: 0.92rem; line-height: 1.75; }
+
+        .highlight-box {
+          background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+          border: 1px solid #fed7aa; border-radius: 14px;
+          padding: 22px 26px; margin-bottom: 24px;
+          display: flex; align-items: flex-start; gap: 14px;
+        }
+
+        .last-updated-badge {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
+          border-radius: 9999px; padding: 5px 14px;
+          font-size: 0.78rem; font-weight: 600; color: #fff; margin-bottom: 20px;
+        }
+
+        .step-card {
+          background: #fff; border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+          padding: 28px 24px; text-align: center;
+          border: 1px solid #fed7aa;
+          transition: box-shadow 0.2s, transform 0.2s;
+          position: relative;
+        }
+        .step-card:hover { box-shadow: 0 8px 28px rgba(255,123,29,0.12); transform: translateY(-3px); }
+
+        .step-number {
+          position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+          background: #ff7b1d; color: #fff;
+          border-radius: 9999px; padding: 3px 14px;
+          font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
+        }
+
+        .timeline-connector {
+          display: none;
+        }
+
+        @media (min-width: 768px) {
+          .step-grid { position: relative; }
+          .timeline-connector { display: block; }
+        }
+
+        @media (max-width: 768px) {
+          .policy-layout { flex-direction: column; }
+          .toc-nav { position: static; }
+          .policy-card { padding: 24px 20px; }
         }
       `}</style>
 
-      <div
-        className="refund-page min-h-screen"
-        style={{ background: "#fff7ed" }}
-      >
-        {/* ── HEADER ── */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ff7b1d 0%, #c2410c 100%)",
-          }}
-          className="py-16 px-6 text-center"
-        >
-          <div className="text-5xl mb-4">↩️</div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-3">
-            Refund & Return Policy
-          </h1>
-          <p className="text-orange-100 text-base">
-            Last updated on March 19th, 2024
-          </p>
-          <div className="mt-4 inline-block bg-white bg-opacity-20 text-white text-sm font-semibold px-5 py-2 rounded-full border border-white border-opacity-30">
-            RushBaskets Grocer · info.rushbaskets@gmail.com
-          </div>
-        </div>
+      <div className="progress-bar" style={{ width: `${scrollProgress}%` }} />
 
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          {/* ── QUICK SUMMARY CARDS ── */}
-          <div className="section-badge">⚡ QUICK SUMMARY</div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {quickPoints.map(({ icon, label, value }) => (
-              <div key={label} className="quick-card">
-                <div className="text-3xl mb-2">{icon}</div>
-                <div className="text-xs text-gray-500 font-semibold mb-1">
-                  {label}
-                </div>
-                <div className="text-sm font-bold text-gray-800">{value}</div>
+      <div className="text-gray-800">
+        {/* ── Hero ── */}
+        <section className="hero-bg text-white py-20 px-6 md:px-12 overflow-hidden">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="md:w-3/5">
+              <span className="last-updated-badge">
+                📅 Last Updated: June 1, 2025
+              </span>
+              <span
+                className="section-tag"
+                style={{ background: "rgba(255,255,255,0.2)", color: "#fff" }}
+              >
+                🔄 REFUND & RETURN POLICY
+              </span>
+              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5 mt-2">
+                Hassle-Free{" "}
+                <span style={{ color: "#fde68a" }}>Returns & Refunds</span>
+              </h1>
+              <p className="text-lg text-orange-100 leading-relaxed mb-8 max-w-xl">
+                Your satisfaction is our top priority. If something isn't right
+                with your order, we'll make it right — quickly, fairly, and
+                without unnecessary hassle.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => scrollToSection("eligibility")}
+                  className="btn-outline-white"
+                >
+                  📖 Read Policy
+                </button>
+                <button
+                  onClick={() => navigate("/contact")}
+                  className="btn-primary"
+                  style={{ background: "#fff", color: "#ff7b1d" }}
+                >
+                  🤝 Contact Support
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* ── INTRO NOTE ── */}
-          <div
-            className="rounded-2xl p-5 mb-10 flex gap-4 items-start"
-            style={{
-              background: "#fff",
-              border: "1px solid #fed7aa",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-            }}
-          >
-            <span className="text-3xl flex-shrink-0">📢</span>
-            <div>
-              <p className="font-bold text-gray-800 mb-1">Important Notice</p>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                This Refund and Return Policy governs all transactions made
-                through RushBaskets and applies to our payment processing
-                partner Razorpay. Please read the following terms carefully
-                before making any purchase. By using our platform, you agree to
-                be bound by these terms.
+            {/* Hero SVG */}
+            <div className="md:w-2/5 flex justify-center">
+              <svg
+                viewBox="0 0 320 300"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ width: "100%", maxWidth: "300px" }}
+              >
+                <circle
+                  cx="160"
+                  cy="150"
+                  r="130"
+                  fill="rgba(255,255,255,0.1)"
+                />
+                <circle
+                  cx="160"
+                  cy="150"
+                  r="100"
+                  fill="rgba(255,255,255,0.07)"
+                />
+                {/* Box */}
+                <rect
+                  x="80"
+                  y="120"
+                  width="160"
+                  height="110"
+                  rx="10"
+                  fill="#fff"
+                  opacity="0.95"
+                />
+                <rect
+                  x="80"
+                  y="120"
+                  width="160"
+                  height="32"
+                  rx="10"
+                  fill="#fde68a"
+                />
+                <rect x="80" y="140" width="160" height="12" fill="#fde68a" />
+                {/* Tape */}
+                <rect
+                  x="145"
+                  y="108"
+                  width="30"
+                  height="44"
+                  rx="4"
+                  fill="#fed7aa"
+                  opacity="0.8"
+                />
+                <rect
+                  x="150"
+                  y="108"
+                  width="20"
+                  height="44"
+                  rx="3"
+                  fill="#ffedd5"
+                  opacity="0.9"
+                />
+                {/* Arrow returning */}
+                <path
+                  d="M200 175 Q230 160 230 185 Q230 210 200 210"
+                  stroke="#ff7b1d"
+                  strokeWidth="5"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                <polygon points="196,168 204,175 196,182" fill="#ff7b1d" />
+                {/* Checkmark */}
+                <circle cx="135" cy="185" r="20" fill="#22c55e" opacity="0.9" />
+                <path
+                  d="M125 185 L132 192 L145 175"
+                  stroke="#fff"
+                  strokeWidth="3.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Money coin */}
+                <circle cx="240" cy="110" r="20" fill="#fbbf24" />
+                <text
+                  x="240"
+                  y="116"
+                  fontSize="16"
+                  fontWeight="bold"
+                  fill="#7c2d00"
+                  textAnchor="middle"
+                >
+                  ₹
+                </text>
+                {/* Sparkles */}
+                <circle cx="65" cy="105" r="4" fill="rgba(255,255,255,0.5)" />
+                <circle cx="258" cy="80" r="3" fill="rgba(255,255,255,0.4)" />
+                <circle cx="70" cy="215" r="5" fill="rgba(255,255,255,0.35)" />
+                <circle cx="255" cy="225" r="4" fill="rgba(255,255,255,0.4)" />
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Quick Summary Strip ── */}
+        <section className="py-10 px-6 bg-white border-b border-orange-100">
+          <div className="max-w-5xl mx-auto">
+            <div className="highlight-box">
+              <span
+                style={{ fontSize: "1.8rem", lineHeight: 1, flexShrink: 0 }}
+              >
+                💡
+              </span>
+              <div>
+                <p className="font-bold text-gray-800 text-sm mb-1">
+                  Quick Summary
+                </p>
+                <p className="text-gray-600 text-sm leading-relaxed m-0">
+                  Report issues within <strong>24 hours</strong> of delivery via
+                  the app. Eligible items are refunded within{" "}
+                  <strong>5–7 business days</strong> to your original payment
+                  method. Fresh produce is generally non-returnable unless
+                  spoiled or incorrect. You can also opt for an{" "}
+                  <strong>instant Wallet Credit</strong> or{" "}
+                  <strong>free replacement</strong> instead of a refund.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-3">
+              {quickLinks.map(({ label, icon, id }) => (
+                <button
+                  key={id}
+                  onClick={() => scrollToSection(id)}
+                  style={{
+                    background: "#fff7ed",
+                    border: "1px solid #fed7aa",
+                    borderRadius: "9999px",
+                    padding: "8px 18px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontWeight: 500,
+                    color: "#7c2d00",
+                    fontSize: "0.85rem",
+                    cursor: "pointer",
+                    transition: "background 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "#ffedd5")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "#fff7ed")
+                  }
+                >
+                  <span>{icon}</span>
+                  <span>{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── How It Works Steps ── */}
+        <section className="py-16 px-6 md:px-12 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="section-tag">⚡ SIMPLE PROCESS</span>
+              <h2 className="text-3xl font-extrabold text-gray-800">
+                How to Return in 4 Steps
+              </h2>
+              <p className="text-gray-500 mt-2 text-sm">
+                Getting a refund or replacement is quick and easy
               </p>
             </div>
-          </div>
-
-          {/* ── POLICY SECTIONS ── */}
-          <div className="space-y-5 mb-10">
-            {sections.map(({ icon, title, color, bg, border, content }) => (
-              <div
-                key={title}
-                className="policy-card"
-                style={{ background: bg, borderLeftColor: color }}
-              >
-                <h2
-                  className="text-lg font-bold mb-4 flex items-center gap-2"
-                  style={{ color }}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 step-grid">
+              {steps.map(({ step, icon, title, desc }) => (
+                <div
+                  key={step}
+                  className="step-card"
+                  style={{ paddingTop: "36px" }}
                 >
-                  <span>{icon}</span> {title}
-                </h2>
-                <div className="space-y-0">
-                  {content.map((clause, i) => {
-                    const dotIndex = clause.indexOf(".");
-                    const clauseNum = clause.substring(0, dotIndex + 1);
-                    const clauseText = clause.substring(dotIndex + 1).trim();
-                    return (
-                      <div key={i} className="clause-item flex gap-2">
-                        <span className="clause-number" style={{ color }}>
-                          {clauseNum}
-                        </span>
-                        <span>{clauseText}</span>
+                  <div className="step-number">STEP {step}</div>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>
+                    {icon}
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base mb-2">
+                    {title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed m-0">
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Main Policy Content ── */}
+        <section
+          className="py-16 px-6 md:px-12"
+          style={{ background: "#fff7ed" }}
+        >
+          <div className="max-w-6xl mx-auto flex gap-10 policy-layout">
+            {/* Sidebar TOC */}
+            <aside style={{ width: "240px", flexShrink: 0 }}>
+              <nav className="toc-nav">
+                <p
+                  style={{
+                    fontSize: "0.7rem",
+                    fontWeight: 700,
+                    color: "#9ca3af",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    marginBottom: "14px",
+                    marginTop: 0,
+                  }}
+                >
+                  Contents
+                </p>
+                {sections.map((s) => (
+                  <button
+                    key={s.id}
+                    className={`toc-link ${activeSection === s.id ? "active" : ""}`}
+                    onClick={() => scrollToSection(s.id)}
+                  >
+                    <span className="toc-dot" />
+                    <span className="text-base">{s.icon}</span>
+                    <span>{s.title}</span>
+                  </button>
+                ))}
+                <div
+                  style={{
+                    marginTop: "20px",
+                    paddingTop: "16px",
+                    borderTop: "1px solid #fed7aa",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "0.72rem",
+                      color: "#9ca3af",
+                      margin: "0 0 10px 0",
+                    }}
+                  >
+                    Need Help?
+                  </p>
+                  <button
+                    onClick={() => navigate("/contact")}
+                    className="btn-primary"
+                    style={{
+                      width: "100%",
+                      justifyContent: "center",
+                      fontSize: "0.8rem",
+                      padding: "10px 16px",
+                    }}
+                  >
+                    Contact Us →
+                  </button>
+                </div>
+              </nav>
+            </aside>
+
+            {/* Sections */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {sections.map((s, idx) => (
+                <div
+                  key={s.id}
+                  id={s.id}
+                  className="policy-card"
+                  style={{ borderTopColor: s.border, scrollMarginTop: "100px" }}
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        borderRadius: "12px",
+                        background: "#fff7ed",
+                        border: `2px solid ${s.border}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "1.4rem",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {s.icon}
+                    </div>
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "0.68rem",
+                          fontWeight: 700,
+                          color: "#9ca3af",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          display: "block",
+                          marginBottom: "2px",
+                        }}
+                      >
+                        Section {String(idx + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className={`text-xl font-bold m-0 ${s.titleColor}`}>
+                        {s.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div>
+                    {s.content.map((text, i) => (
+                      <div key={i} className="policy-point">
+                        <div className="policy-bullet">{i + 1}</div>
+                        <p>{text}</p>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* Contact Card */}
+              <div
+                className="policy-card"
+                style={{
+                  borderTopColor: "#f97316",
+                  background:
+                    "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "12px",
+                      background: "#ffedd5",
+                      border: "2px solid #f97316",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1.4rem",
+                    }}
+                  >
+                    📬
+                  </div>
+                  <div>
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        fontWeight: 700,
+                        color: "#9ca3af",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        display: "block",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      Section 09
+                    </span>
+                    <h3 className="text-xl font-bold m-0 text-orange-600">
+                      Contact & Escalation
+                    </h3>
+                  </div>
+                </div>
+                <div className="policy-point">
+                  <div className="policy-bullet">1</div>
+                  <p>
+                    For all refund, return, and replacement queries, reach out
+                    to us at{" "}
+                    <strong style={{ color: "#ff7b1d" }}>
+                      info.rushbaskets@gmail.com
+                    </strong>{" "}
+                    or through the in-app support chat. We respond within 24
+                    hours on business days.
+                  </p>
+                </div>
+                <div className="policy-point">
+                  <div className="policy-bullet">2</div>
+                  <p>
+                    If your issue is not resolved within 5 business days of
+                    reporting, you may escalate it by emailing with the subject
+                    line "Escalation — [Your Order ID]" and our senior support
+                    team will take it up within 24 hours.
+                  </p>
+                </div>
+                <div className="policy-point">
+                  <div className="policy-bullet">3</div>
+                  <p>
+                    RushBaskets reserves the right to modify this Refund &
+                    Return Policy at any time. Updates will be communicated via
+                    the app and email. Continued use of the platform after
+                    changes constitutes acceptance of the revised policy.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Stats Bar ── */}
+        <section className="py-14 px-6" style={{ background: "#ff7b1d" }}>
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { value: "24hr", label: "Return Window" },
+              { value: "5–7", label: "Days for Refund" },
+              { value: "2hr", label: "Wallet Credit" },
+              { value: "100%", label: "Satisfaction Goal" },
+            ].map(({ value, label }) => (
+              <div key={label} style={{ textAlign: "center", padding: "16px" }}>
+                <div className="text-4xl font-extrabold text-white mb-1">
+                  {value}
+                </div>
+                <div
+                  className="text-sm"
+                  style={{ color: "#ffedd5", fontWeight: 500 }}
+                >
+                  {label}
                 </div>
               </div>
             ))}
           </div>
+        </section>
 
-          {/* ── ACCEPTANCE DETAILS TABLE ── */}
-          <div className="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden mb-10">
-            <div
-              className="px-6 py-4 border-b border-orange-100"
-              style={{ background: "#ff7b1d" }}
-            >
-              <h2 className="text-white font-bold text-lg flex items-center gap-2">
-                📄 Acceptance Details
+        {/* ── Refund Timelines ── */}
+        <section className="py-20 px-6 md:px-12 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="section-tag">⏱️ REFUND TIMELINES</span>
+              <h2 className="text-3xl font-extrabold text-gray-800">
+                When Will You Get Your Money?
               </h2>
+              <p className="text-gray-500 mt-2 text-sm">
+                Estimated refund timelines by payment method
+              </p>
             </div>
-            <table className="w-full">
-              <tbody>
-                {[
-                  ["Owner ID", "RMzccuo3TjJ9Vu"],
-                  ["Owner Name", "RUSH BASKETS GROSER"],
-                  ["IP Address", "10.26.99.194"],
-                  ["Date Of Acceptance", "2026-03-26 16:17:19 IST"],
-                  ["Signatory Name", "Diksha"],
-                  ["Contact Number", "+919045199008"],
-                  ["Email", "info.rushbaskets@gmail.com"],
-                ].map(([key, val]) => (
-                  <tr
-                    key={key}
-                    className="hover:bg-orange-50"
-                    style={{ borderBottom: "1px solid #fed7aa" }}
-                  >
-                    <td className="px-6 py-3 font-semibold text-gray-600 text-sm w-52">
-                      {key}
-                    </td>
-                    <td className="px-6 py-3 text-gray-800 text-sm">{val}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* ── REFUND PROCESS STEPS ── */}
-          <div className="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden mb-10">
-            <div className="px-6 py-4" style={{ background: "#ff7b1d" }}>
-              <h2 className="text-white font-bold text-lg flex items-center gap-2">
-                🔄 How Our Refund Process Works
-              </h2>
-            </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
                 {
-                  step: "01",
-                  icon: "📝",
-                  title: "Raise a Request",
-                  desc: "Contact us via email or the contact form with your order details and reason for return/refund.",
+                  icon: "💳",
+                  method: "Credit / Debit Card",
+                  time: "5–7 Business Days",
+                  note: "Processing time depends on your bank.",
+                  bg: "#eff6ff",
+                  border: "#bfdbfe",
+                  text: "#1d4ed8",
+                  badge: "#dbeafe",
                 },
                 {
-                  step: "02",
-                  icon: "🔍",
-                  title: "Review & Approval",
-                  desc: "Our team reviews your request within 24–48 hours and verifies transaction details.",
+                  icon: "📱",
+                  method: "UPI / Net Banking",
+                  time: "3–5 Business Days",
+                  note: "Usually faster than card refunds.",
+                  bg: "#f0fdf4",
+                  border: "#bbf7d0",
+                  text: "#15803d",
+                  badge: "#dcfce7",
                 },
                 {
-                  step: "03",
-                  icon: "💸",
-                  title: "Refund Initiated",
-                  desc: "Approved refunds are processed to the original payment source within 5–7 business days.",
+                  icon: "💵",
+                  method: "Cash on Delivery (COD)",
+                  time: "Wallet Credit: 2 Hours",
+                  note: "Bank transfer takes 7–10 business days.",
+                  bg: "#fff7ed",
+                  border: "#fed7aa",
+                  text: "#c2410c",
+                  badge: "#ffedd5",
                 },
-              ].map(({ step, icon, title, desc }) => (
-                <div key={step} className="flex gap-4 items-start">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-white flex-shrink-0 text-sm"
-                    style={{
-                      background: "linear-gradient(135deg, #ff7b1d, #c2410c)",
-                    }}
-                  >
-                    {step}
+                {
+                  icon: "👛",
+                  method: "RushBaskets Wallet",
+                  time: "Instant (within 2 Hours)",
+                  note: "Fastest refund option available.",
+                  bg: "#fdf4ff",
+                  border: "#e9d5ff",
+                  text: "#7e22ce",
+                  badge: "#f3e8ff",
+                },
+              ].map(({ icon, method, time, note, bg, border, text, badge }) => (
+                <div
+                  key={method}
+                  style={{
+                    background: bg,
+                    border: `1px solid ${border}`,
+                    borderRadius: "16px",
+                    padding: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "18px",
+                  }}
+                >
+                  <div style={{ fontSize: "2.2rem", flexShrink: 0 }}>
+                    {icon}
                   </div>
-                  <div>
-                    <div className="text-xl mb-1">{icon}</div>
-                    <p className="font-bold text-gray-800 text-sm mb-1">
-                      {title}
+                  <div style={{ flex: 1 }}>
+                    <p
+                      style={{
+                        margin: "0 0 4px 0",
+                        fontWeight: 700,
+                        color: "#1f2937",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {method}
                     </p>
-                    <p className="text-gray-500 text-xs leading-relaxed">
-                      {desc}
+                    <p
+                      style={{
+                        margin: "0 0 6px 0",
+                        color: "#4b5563",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      {note}
                     </p>
+                    <span
+                      style={{
+                        background: badge,
+                        color: text,
+                        borderRadius: "9999px",
+                        padding: "3px 12px",
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {time}
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+        </section>
 
-          {/* ── FOOTER NOTE ── */}
-          <div
-            className="rounded-2xl p-6 text-center mb-8"
-            style={{
-              background: "linear-gradient(135deg, #ff7b1d 0%, #c2410c 100%)",
-            }}
-          >
-            <p className="text-white font-semibold text-base">
-              🧡 RushBaskets is committed to a fair and transparent refund
-              experience. If you have any questions regarding this policy,
-              please don't hesitate to reach out to our support team.
+        {/* ── CTA Banner ── */}
+        <section
+          className="py-20 px-6 text-center"
+          style={{
+            background: "linear-gradient(135deg, #ff7b1d 0%, #c2410c 100%)",
+          }}
+        >
+          <div className="max-w-2xl mx-auto">
+            <div className="text-5xl mb-4">🔄</div>
+            <h2 className="text-4xl font-extrabold text-white mb-4">
+              Not Happy With Your Order?
+            </h2>
+            <p className="mb-8 text-lg" style={{ color: "#ffedd5" }}>
+              We're here to help. Contact our support team and we'll make it
+              right — whether that's a refund, replacement, or credit.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => navigate("/")}
+                className="btn-primary"
+                style={{ background: "#fff", color: "#ff7b1d" }}
+              >
+                🏠 Back to Home
+              </button>
+              <button
+                onClick={() => navigate("/contact")}
+                className="btn-outline-white"
+              >
+                Contact Support →
+              </button>
+            </div>
           </div>
-
-          {/* ── BUTTONS ── */}
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => navigate("/contact")}
-              className="contact-btn"
-            >
-              Contact Support →
-            </button>
-            <button
-              onClick={() => navigate("/privacy")}
-              style={{
-                background: "transparent",
-                color: "#ff7b1d",
-                fontWeight: 700,
-                borderRadius: "9999px",
-                padding: "12px 32px",
-                fontSize: "1rem",
-                border: "2px solid #ff7b1d",
-                cursor: "pointer",
-                transition: "background 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#fff7ed";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-              }}
-            >
-              View Privacy Policy
-            </button>
-          </div>
-        </div>
+        </section>
       </div>
     </>
   );
