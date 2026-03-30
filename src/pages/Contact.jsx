@@ -445,7 +445,7 @@ export default function Contact() {
                         onFocus={() => setFocused("name")}
                         onBlur={() => setFocused(null)}
                         className={inputCls("name")}
-                        placeholder="Diksha Sharma"
+                        placeholder=""
                       />
                     </div>
                     <div>
@@ -460,7 +460,7 @@ export default function Contact() {
                         onFocus={() => setFocused("phone")}
                         onBlur={() => setFocused(null)}
                         className={inputCls("phone")}
-                        placeholder="+91 84496 67337"
+                        placeholder=""
                       />
                     </div>
                   </div>

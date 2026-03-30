@@ -74,10 +74,10 @@ const sections = [
     border: "#f97316",
     titleColor: "text-orange-600",
     content: [
-      "Orders can be cancelled free of charge within 30 minutes of placement, before they are confirmed and dispatched by our fulfillment team. Use the 'Cancel Order' option in the app under 'My Orders'.",
-      "Once an order has been picked up by our delivery partner, cancellation is no longer possible. In such cases, you may initiate a return after delivery if the item meets return eligibility criteria.",
-      "For prepaid orders that are cancelled within the allowed window, a full refund is processed within 3–5 business days to your original payment method.",
-      "RushBaskets reserves the right to cancel orders due to unavailability of products, delivery constraints, suspected fraudulent activity, or pricing errors. In all such cases, a full refund will be issued immediately.",
+      "✅ Before Dispatch — Orders can be cancelled free of charge within 5 minutes of placement, before they are confirmed and dispatched by our fulfillment team. Use the 'Cancel Order' option in the app under 'My Orders'.",
+      "❌ After Dispatch — Once an order has been picked up by our delivery partner, cancellation is no longer possible. In such cases, you may initiate a return after delivery if the item meets return eligibility criteria.",
+      "💰 Refund Policy — For prepaid orders cancelled within the allowed window, a full refund is processed within 3–5 business days to your original payment method.",
+      "⚠️ Cancelled by RushBaskets — RushBaskets reserves the right to cancel orders due to unavailability of products, delivery constraints, suspected fraudulent activity, or pricing errors. In all such cases, a full refund will be issued immediately.",
     ],
   },
   {
