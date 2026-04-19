@@ -1,31 +1,71 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import {
+  Mail,
+  Clock,
+  ThumbsUp,
+  Globe,
+  Shield,
+  MessageCircle,
+  ArrowLeft,
+  ShoppingCart,
+  Package,
+  HeartHandshake,
+  Star,
+  Smartphone,
+  MapPin,
+  Send,
+  CheckCircle,
+  Zap,
+  HelpCircle,
+} from "lucide-react";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const contactInfo = [
   {
-    icon: "📧",
+    icon: Mail,
     title: "Email Us",
     detail: "info.rushbaskets@gmail.com",
     subDetail: "24/7 Support Available",
     borderColor: "#f97316",
     titleColor: "#ea580c",
+    grad: "from-orange-400 to-orange-600",
     bg: "#fff7ed",
     link: "mailto:info.rushbaskets@gmail.com",
   },
 ];
 
 const quickFacts = [
-  { icon: "⏰", title: "Response Time", desc: "Within 24 hours" },
   {
-    icon: "💯",
+    icon: Clock,
+    title: "Response Time",
+    desc: "Within 24 hours",
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+  },
+  {
+    icon: ThumbsUp,
     title: "Satisfaction Rate",
     desc: "4.9★ customer satisfaction",
+    color: "text-amber-500",
+    bg: "bg-amber-50",
   },
-  { icon: "🌐", title: "Languages", desc: "English, Hindi & more" },
-  { icon: "🛡️", title: "Secure Support", desc: "All data fully encrypted" },
+  {
+    icon: Globe,
+    title: "Languages",
+    desc: "English, Hindi & more",
+    color: "text-green-500",
+    bg: "bg-green-50",
+  },
+  {
+    icon: Shield,
+    title: "Secure Support",
+    desc: "All data fully encrypted",
+    color: "text-orange-500",
+    bg: "bg-orange-50",
+  },
 ];
 
 const faqs = [
@@ -61,11 +101,49 @@ const socialLinks = [
     link: "https://www.instagram.com/rushbaskets?igsh=aWtsdmJ1Y2VocDB3",
   },
 ];
+
+const stats = [
+  { value: "10K+", label: "Orders Delivered", icon: ShoppingCart },
+  { value: "2500+", label: "Products Listed", icon: Package },
+  { value: "24/7", label: "Support Available", icon: HeartHandshake },
+  { value: "4.9★", label: "Customer Rating", icon: Star },
+];
+
+const featureBanner = [
+  {
+    icon: Shield,
+    title: "Secure Payments",
+    sub: "Multiple payment options",
+    color: "text-orange-500",
+    bg: "bg-orange-50",
+  },
+  {
+    icon: Smartphone,
+    title: "Easy Booking",
+    sub: "Order in seconds",
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+  },
+  {
+    icon: Star,
+    title: "Rated Suppliers",
+    sub: "Quality assured",
+    color: "text-amber-500",
+    bg: "bg-amber-50",
+  },
+  {
+    icon: MapPin,
+    title: "Live Tracking",
+    sub: "Real-time updates",
+    color: "text-green-500",
+    bg: "bg-green-50",
+  },
+];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Contact() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -101,10 +179,8 @@ export default function Contact() {
   const ref = (key) => (el) => {
     refs.current[key] = el;
   };
-
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
   const handleSubmit = () => {
     if (!formData.name || !formData.email || !formData.message) return;
     setSubmitted(true);
@@ -115,316 +191,383 @@ export default function Contact() {
   };
 
   const inputCls = (field) =>
-    `w-full px-4 py-3 border-2 rounded-xl focus:outline-none text-sm transition-all duration-200 ${
-      focused === field ? "border-orange-400 shadow-sm" : "border-gray-200"
+    `w-full px-4 py-3 border-2 rounded-xl focus:outline-none text-sm transition-all duration-200 font-semibold ${
+      focused === field
+        ? "border-orange-400 shadow-sm bg-orange-50/30"
+        : "border-gray-200 bg-white"
     }`;
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
-        body { margin: 0; padding: 0; background: #fff; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fraunces:wght@700;900&display=swap');
+        *,*::before,*::after { box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; }
+        body { margin:0; padding:0; background:#fff; }
+
+        @keyframes blob {
+          0%,100%{ transform:translate(0,0) scale(1); }
+          33%    { transform:translate(26px,-42px) scale(1.07); }
+          66%    { transform:translate(-16px,16px) scale(0.94); }
+        }
+        .blob-anim { animation:blob 9s infinite ease-in-out; }
+        .bd2 { animation-delay:2.4s; }
 
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(28px); }
-          to   { opacity: 1; transform: translateY(0); }
+          from { opacity:0; transform:translateY(28px); }
+          to   { opacity:1; transform:translateY(0); }
         }
         @keyframes slideLeft {
-          from { opacity: 0; transform: translateX(-32px); }
-          to   { opacity: 1; transform: translateX(0); }
+          from { opacity:0; transform:translateX(-32px); }
+          to   { opacity:1; transform:translateX(0); }
         }
         @keyframes slideRight {
-          from { opacity: 0; transform: translateX(32px); }
-          to   { opacity: 1; transform: translateX(0); }
+          from { opacity:0; transform:translateX(32px); }
+          to   { opacity:1; transform:translateX(0); }
         }
         @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-24px); }
-          to   { opacity: 1; transform: translateY(0); }
+          from { opacity:0; transform:translateY(-24px); }
+          to   { opacity:1; transform:translateY(0); }
         }
         @keyframes scaleUp {
-          from { opacity: 0; transform: scale(0.88); }
-          to   { opacity: 1; transform: scale(1); }
+          from { opacity:0; transform:scale(0.88); }
+          to   { opacity:1; transform:scale(1); }
         }
         @keyframes shimmerSlide {
-          0%   { background-position: -200% center; }
-          100% { background-position: 200% center; }
+          0%   { background-position:-200% center; }
+          100% { background-position:200% center; }
         }
         @keyframes float {
-          0%,100% { transform: translateY(0); }
-          50%      { transform: translateY(-14px); }
+          0%,100% { transform:translateY(0); }
+          50%     { transform:translateY(-14px); }
         }
         @keyframes successPop {
-          0%   { transform: scale(0.7); opacity: 0; }
-          60%  { transform: scale(1.08); }
-          100% { transform: scale(1);   opacity: 1; }
+          0%  { transform:scale(0.7); opacity:0; }
+          60% { transform:scale(1.08); }
+          100%{ transform:scale(1);   opacity:1; }
         }
 
-        .anim-fadeUp    { animation: fadeUp    0.65s ease-out forwards; }
-        .anim-slideLeft { animation: slideLeft  0.65s ease-out forwards; }
-        .anim-slideRight{ animation: slideRight 0.65s ease-out forwards; }
-        .anim-slideDown { animation: slideDown  0.65s ease-out forwards; }
-        .anim-scaleUp   { animation: scaleUp   0.6s ease-out forwards; }
-        .anim-float     { animation: float 4s ease-in-out infinite; }
-        .anim-successPop{ animation: successPop 0.5s ease-out forwards; }
+        .anim-fadeUp    { animation:fadeUp    0.65s ease-out forwards; }
+        .anim-slideLeft { animation:slideLeft  0.65s ease-out forwards; }
+        .anim-slideRight{ animation:slideRight 0.65s ease-out forwards; }
+        .anim-slideDown { animation:slideDown  0.65s ease-out forwards; }
+        .anim-scaleUp   { animation:scaleUp   0.6s ease-out forwards; }
+        .anim-float     { animation:float 4s ease-in-out infinite; }
+        .anim-successPop{ animation:successPop 0.5s ease-out forwards; }
 
         .d0{animation-delay:0s}  .d1{animation-delay:.1s} .d2{animation-delay:.2s}
-        .d3{animation-delay:.3s} .d4{animation-delay:.4s} .d5{animation-delay:.5s}
+        .d3{animation-delay:.3s} .d4{animation-delay:.4s}
 
-        .hero-bg {
-          background: linear-gradient(135deg, #ff7b1d 0%, #e06010 60%, #c2410c 100%);
+        /* pill — same as Home */
+        .pill {
+          display:inline-flex; align-items:center; gap:6px;
+          background:#fff7ed; color:#c2410c;
+          border:1.5px solid #fed7aa; border-radius:9999px;
+          padding:7px 16px; font-size:.74rem; font-weight:800; letter-spacing:.06em;
         }
+
         .gradient-text {
-          background: linear-gradient(90deg, #fde68a, #fff 60%, #fde68a);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmerSlide 3s linear infinite;
-        }
-        .section-tag {
-          display: inline-block;
-          background: #ffedd5;
-          color: #ff7b1d;
-          border-radius: 9999px;
-          padding: 4px 16px;
-          font-size: .78rem;
-          font-weight: 600;
-          letter-spacing: .06em;
-          margin-bottom: 10px;
+          background:linear-gradient(90deg,#fde68a,#fff 60%,#fde68a);
+          background-size:200% auto;
+          -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+          background-clip:text; animation:shimmerSlide 3s linear infinite;
         }
 
-        /* contact info cards */
+        /* icon wrap */
+        .icon-wrap {
+          display:inline-flex; align-items:center; justify-content:center;
+          width:60px; height:60px; border-radius:18px; color:#fff;
+          margin-bottom:18px; box-shadow:0 8px 20px rgba(0,0,0,.16);
+          transition:transform .3s;
+        }
+
+        /* contact info card */
         .info-card {
-          border-radius: 18px;
-          box-shadow: 0 4px 20px rgba(0,0,0,.07);
-          padding: 28px 22px;
-          border-top: 4px solid;
-          text-align: center;
-          transition: transform .25s, box-shadow .25s;
-          opacity: 0;
-          text-decoration: none;
-          display: block;
+          background:#fff; border-radius:24px;
+          border:1.5px solid #ffedd5;
+          box-shadow:0 4px 20px rgba(0,0,0,.05);
+          padding:32px 26px; border-top:4px solid;
+          text-align:center;
+          transition:transform .3s ease, box-shadow .3s ease, border-color .3s;
+          opacity:0; text-decoration:none; display:block;
         }
         .info-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 12px 32px rgba(0,0,0,.12);
+          transform:translateY(-10px);
+          box-shadow:0 24px 56px rgba(249,115,22,.13);
+          border-color:#fb923c;
+        }
+        .info-card:hover .icon-wrap { transform:scale(1.1) rotate(5deg); }
+
+        /* form card */
+        .form-card {
+          background:#fff; border-radius:24px;
+          box-shadow:0 6px 28px rgba(0,0,0,.07);
+          padding:36px 32px;
+          border-top:4px solid #f97316;
+          border:1.5px solid #ffedd5;
         }
 
-        /* form */
-        .form-card {
-          background: #fff;
-          border-radius: 20px;
-          box-shadow: 0 6px 28px rgba(0,0,0,.08);
-          padding: 36px 32px;
-          border-top: 4px solid #ff7b1d;
-        }
         .submit-btn {
-          width: 100%;
-          background: linear-gradient(135deg, #ff7b1d, #c2410c);
-          color: #fff;
-          font-weight: 700;
-          font-size: 1rem;
-          border: none;
-          border-radius: 12px;
-          padding: 14px;
-          cursor: pointer;
-          transition: opacity .2s, transform .2s, box-shadow .2s;
-          box-shadow: 0 4px 16px rgba(255,123,29,.35);
+          width:100%;
+          background:linear-gradient(135deg,#f97316,#c2410c);
+          color:#fff; font-weight:800; font-size:1rem;
+          border:none; border-radius:14px; padding:14px;
+          cursor:pointer; display:inline-flex; align-items:center;
+          justify-content:center; gap:8px;
+          transition:all .25s;
+          box-shadow:0 4px 16px rgba(249,115,22,.35);
         }
         .submit-btn:hover {
-          opacity: .92;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 28px rgba(255,123,29,.45);
+          box-shadow:0 8px 28px rgba(249,115,22,.45);
+          transform:translateY(-2px);
         }
-        .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+        .submit-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
 
-        /* side panels */
+        /* side card */
         .side-card {
-          background: #fff;
-          border-radius: 18px;
-          box-shadow: 0 4px 20px rgba(0,0,0,.07);
-          padding: 26px 24px;
-          border-top: 4px solid #ff7b1d;
+          background:#fff; border-radius:20px;
+          box-shadow:0 4px 20px rgba(0,0,0,.06);
+          padding:26px 24px;
+          border:1.5px solid #ffedd5;
+          border-top:4px solid #f97316;
         }
 
-        /* faq */
+        /* faq item */
         .faq-item {
-          border-radius: 14px;
-          padding: 20px 22px;
-          border-left: 4px solid #ff7b1d;
-          background: #fff7ed;
-          transition: box-shadow .2s, transform .2s;
-          opacity: 0;
+          border-radius:20px; padding:22px 24px;
+          border-left:4px solid #f97316;
+          background:#fff;
+          border:1.5px solid #ffedd5;
+          border-left:4px solid #f97316;
+          box-shadow:0 2px 10px rgba(0,0,0,.04);
+          transition:box-shadow .25s, transform .25s, border-color .25s;
+          opacity:0;
         }
         .faq-item:hover {
-          box-shadow: 0 6px 20px rgba(0,0,0,.09);
-          transform: translateY(-3px);
+          box-shadow:0 12px 32px rgba(249,115,22,.12);
+          transform:translateY(-4px);
+          border-color:#fb923c;
         }
 
-        /* social */
+        /* social btn */
         .social-btn {
-          width: 48px; height: 48px;
-          border-radius: 50%;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 1.4rem;
-          color: #fff;
-          transition: transform .25s, box-shadow .25s;
-          text-decoration: none;
+          width:48px; height:48px; border-radius:50%;
+          display:flex; align-items:center; justify-content:center;
+          font-size:1.3rem; color:#fff; text-decoration:none;
+          transition:transform .25s, box-shadow .25s;
         }
         .social-btn:hover {
-          transform: translateY(-4px) scale(1.1);
-          box-shadow: 0 8px 20px rgba(0,0,0,.2);
+          transform:translateY(-5px) scale(1.12);
+          box-shadow:0 10px 24px rgba(0,0,0,.22);
         }
 
-        /* success */
+        /* success banner */
         .success-banner {
-          background: linear-gradient(135deg, #22c55e, #16a34a);
-          color: #fff;
-          border-radius: 12px;
-          padding: 14px 18px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-weight: 600;
-          font-size: .9rem;
-          margin-bottom: 20px;
+          background:linear-gradient(135deg,#22c55e,#16a34a);
+          color:#fff; border-radius:14px; padding:14px 18px;
+          display:flex; align-items:center; gap:10px;
+          font-weight:700; font-size:.9rem; margin-bottom:20px;
         }
 
-        /* map placeholder */
-        .map-placeholder {
-          width: 100%;
-          height: 200px;
-          background: linear-gradient(135deg, #ffedd5, #fed7aa);
-          border-radius: 14px;
-          border: 1px solid #fed7aa;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          text-align: center;
-          padding: 16px;
+        /* stat card */
+        .stat-card {
+          background:rgba(255,255,255,.15); backdrop-filter:blur(12px);
+          border-radius:22px; padding:28px; text-align:center;
+          box-shadow:0 8px 32px rgba(0,0,0,.1);
+          transition:background .3s, transform .3s;
+        }
+        .stat-card:hover { background:rgba(255,255,255,.25); transform:translateY(-5px); }
+
+        /* feature banner item */
+        .feat-item {
+          display:flex; align-items:center; gap:14px;
+          background:#fff; border:1.5px solid #ffedd5;
+          border-radius:18px; padding:16px 20px;
+          transition:all .25s; box-shadow:0 2px 10px rgba(0,0,0,.04);
+        }
+        .feat-item:hover {
+          border-color:#fb923c;
+          box-shadow:0 8px 28px rgba(249,115,22,.12);
+          transform:translateY(-4px);
         }
 
-        /* blob */
-        .blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(60px);
-          opacity: .12;
-          pointer-events: none;
+        /* outline button */
+        .btn-outline {
+          display:inline-flex; align-items:center; gap:8px;
+          background:transparent; color:#fff; font-weight:700;
+          border-radius:18px; padding:15px 34px; font-size:1rem;
+          border:2px solid rgba(255,255,255,.7); cursor:pointer;
+          transition:all .25s;
         }
+        .btn-outline:hover { background:rgba(255,255,255,.12); border-color:#fff; }
       `}</style>
 
       <div className="text-gray-800">
         {/* ── HERO ── */}
-        <section className="hero-bg text-white py-24 px-6 md:px-12 overflow-hidden relative">
-          <div
-            className="blob w-72 h-72 bg-yellow-300 top-0 left-0"
-            style={{ position: "absolute" }}
-          ></div>
-          <div
-            className="blob w-80 h-80 bg-white bottom-0 right-0"
-            style={{ position: "absolute", animationDelay: "1.5s" }}
-          ></div>
+        <section
+          className="relative text-white py-28 px-6 md:px-14 overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(135deg,#ff7b1d 0%,#e06010 60%,#c2410c 100%)",
+          }}
+        >
+          <div className="absolute top-8 left-8 w-80 h-80 bg-yellow-300 rounded-full blur-3xl opacity-10 blob-anim" />
+          <div className="absolute bottom-8 right-8 w-96 h-96 bg-white rounded-full blur-3xl opacity-10 blob-anim bd2" />
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <span
-              className="section-tag anim-slideDown d0"
-              style={{ background: "rgba(255,255,255,.2)", color: "#fff" }}
+            <div
+              className="pill mb-6 justify-center anim-slideDown d0"
+              style={{
+                background: "rgba(255,255,255,.2)",
+                color: "#fff",
+                border: "1.5px solid rgba(255,255,255,.35)",
+              }}
             >
-              💬 CONTACT US
-            </span>
+              <MessageCircle className="w-4 h-4" />
+              CONTACT US
+            </div>
 
-            <div className="text-6xl my-4 anim-float">🤝</div>
+            <div className="flex justify-center mb-4">
+              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center anim-float">
+                <HeartHandshake className="w-10 h-10 text-white" />
+              </div>
+            </div>
 
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-5 anim-slideDown d1">
+            <h1
+              className="text-5xl md:text-6xl font-black leading-tight mb-5 anim-slideDown d1"
+              style={{ fontFamily: "'Fraunces',serif" }}
+            >
               Get In <span className="gradient-text">Touch</span>
             </h1>
 
-            <p className="text-xl text-orange-100 leading-relaxed max-w-2xl mx-auto mb-10 anim-fadeUp d2">
+            <p className="text-xl text-orange-100 leading-relaxed max-w-2xl mx-auto mb-10 anim-fadeUp d2 font-medium">
               Have a question, a suggestion, or want to onboard your store? We'd
               love to hear from you — anytime, any day.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center anim-fadeUp d3">
-              <button
-                onClick={() => navigate("/")}
-                className="btn-outline-white"
-              >
-                ← Back to Home
+            <div className="flex justify-center anim-fadeUp d3">
+              <button onClick={() => navigate("/")} className="btn-outline">
+                <ArrowLeft className="w-4 h-4" />
+                Back to Home
               </button>
             </div>
           </div>
         </section>
 
-        <style>{`.btn-outline-white{background:transparent;color:#fff;font-weight:600;border-radius:9999px;padding:13px 32px;font-size:1rem;border:2px solid rgba(255,255,255,.7);cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:8px;}.btn-outline-white:hover{background:rgba(255,255,255,.12);border-color:#fff;}`}</style>
+        {/* Wave: Hero → Contact Cards */}
+        <div style={{ background: "#fff7ed", marginTop: "-2px" }}>
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,0 C360,80 1080,0 1440,60 L1440,80 L0,80 Z"
+              fill="#c2410c"
+            />
+          </svg>
+        </div>
 
         {/* ── CONTACT INFO CARDS ── */}
         <section
           ref={ref("cards")}
-          className="py-16 px-6 md:px-12"
+          className="py-16 px-6 md:px-14"
           style={{ background: "#fff7ed" }}
         >
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <div className="text-center mb-10">
-              <span className="section-tag">📡 REACH US</span>
-              <h2 className="text-3xl font-extrabold text-gray-800">
-                Contact Information
+              <div className="pill mb-5 justify-center">
+                <Mail className="w-4 h-4" />
+                REACH US
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-black text-gray-900 mb-3"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Contact{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-500">
+                  Information
+                </span>
               </h2>
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 text-lg font-medium">
                 Choose your preferred way to connect
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-              {contactInfo.map((info, i) => (
-                <a
-                  key={info.title}
-                  href={info.link}
-                  className={`info-card ${visible.cards ? `anim-scaleUp d${i}` : ""}`}
-                  style={{
-                    borderTopColor: info.borderColor,
-                    background: info.bg,
-                  }}
-                >
-                  <div className="text-5xl mb-3">{info.icon}</div>
-                  <h3
-                    className="text-lg font-bold mb-1"
-                    style={{ color: info.titleColor }}
+            <div className="grid grid-cols-1 gap-6">
+              {contactInfo.map((info, i) => {
+                const Icon = info.icon;
+                return (
+                  <a
+                    key={info.title}
+                    href={info.link}
+                    className={`info-card ${visible.cards ? `anim-scaleUp d${i}` : ""}`}
+                    style={{ borderTopColor: info.borderColor }}
                   >
-                    {info.title}
-                  </h3>
-                  <p className="text-gray-800 font-semibold text-sm mb-1">
-                    {info.detail}
-                  </p>
-                  <p className="text-gray-400 text-xs">{info.subDetail}</p>
-                </a>
-              ))}
+                    <div
+                      className={`icon-wrap bg-gradient-to-br ${info.grad} mx-auto`}
+                    >
+                      <Icon className="w-7 h-7" />
+                    </div>
+                    <h3
+                      className="text-xl font-black mb-2"
+                      style={{ color: info.titleColor }}
+                    >
+                      {info.title}
+                    </h3>
+                    <p className="text-gray-800 font-bold text-sm mb-1">
+                      {info.detail}
+                    </p>
+                    <p className="text-gray-400 text-xs font-semibold">
+                      {info.subDetail}
+                    </p>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </section>
 
+        {/* Wave: Cards → Form */}
+        <div style={{ background: "#fff", marginTop: "-2px" }}>
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,60 C480,0 960,80 1440,20 L1440,80 L0,80 Z"
+              fill="#fff7ed"
+            />
+          </svg>
+        </div>
+
         {/* ── FORM + SIDEBAR ── */}
-        <section ref={ref("form")} className="py-16 px-6 md:px-12 bg-white">
+        <section ref={ref("form")} className="py-16 px-6 md:px-14 bg-white">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10">
-            {/* ── LEFT: Form ── */}
+            {/* LEFT: Form */}
             <div
               className={`lg:col-span-3 ${visible.form ? "anim-slideLeft d0" : "opacity-0"}`}
             >
               <div className="form-card">
-                <span className="section-tag">✉️ SEND A MESSAGE</span>
-                <h2 className="text-2xl font-extrabold text-gray-800 mb-1 mt-1">
+                <div className="pill mb-4">
+                  <Send className="w-4 h-4" />
+                  SEND A MESSAGE
+                </div>
+                <h2
+                  className="text-2xl font-black text-gray-900 mb-1 mt-1"
+                  style={{ fontFamily: "'Fraunces',serif" }}
+                >
                   We're Listening
                 </h2>
-                <p className="text-gray-500 text-sm mb-6">
+                <p className="text-gray-500 text-sm mb-6 font-medium">
                   Fill out the form and we'll get back within 24 hours.
                 </p>
 
                 {submitted && (
                   <div className="success-banner anim-successPop">
-                    <span className="text-2xl">✅</span>
+                    <CheckCircle className="w-6 h-6 flex-shrink-0" />
                     <span>
                       Message sent! We'll be in touch with you shortly.
                     </span>
@@ -434,7 +577,7 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-gray-700 font-semibold text-sm mb-1">
+                      <label className="block text-gray-700 font-bold text-sm mb-1">
                         Full Name *
                       </label>
                       <input
@@ -445,11 +588,11 @@ export default function Contact() {
                         onFocus={() => setFocused("name")}
                         onBlur={() => setFocused(null)}
                         className={inputCls("name")}
-                        placeholder=""
+                        placeholder="Your name"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold text-sm mb-1">
+                      <label className="block text-gray-700 font-bold text-sm mb-1">
                         Phone Number
                       </label>
                       <input
@@ -460,13 +603,13 @@ export default function Contact() {
                         onFocus={() => setFocused("phone")}
                         onBlur={() => setFocused(null)}
                         className={inputCls("phone")}
-                        placeholder=""
+                        placeholder="+91 XXXXX XXXXX"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-semibold text-sm mb-1">
+                    <label className="block text-gray-700 font-bold text-sm mb-1">
                       Email Address *
                     </label>
                     <input
@@ -482,7 +625,7 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-semibold text-sm mb-1">
+                    <label className="block text-gray-700 font-bold text-sm mb-1">
                       Subject *
                     </label>
                     <input
@@ -498,7 +641,7 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 font-semibold text-sm mb-1">
+                    <label className="block text-gray-700 font-bold text-sm mb-1">
                       Message *
                     </label>
                     <textarea
@@ -518,22 +661,33 @@ export default function Contact() {
                     disabled={submitted}
                     className="submit-btn"
                   >
-                    {submitted ? "✅ Message Sent!" : "Send Message 🚀"}
+                    {submitted ? (
+                      <>
+                        <CheckCircle className="w-5 h-5" /> Message Sent!
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" /> Send Message
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* ── RIGHT: Sidebar ── */}
+            {/* RIGHT: Sidebar */}
             <div
               className={`lg:col-span-2 flex flex-col gap-6 ${visible.form ? "anim-slideRight d1" : "opacity-0"}`}
             >
-              {/* Google Maps embed */}
+              {/* Map */}
               <div className="side-card">
-                <span className="section-tag">📍 LOCATION</span>
+                <div className="pill mb-4">
+                  <MapPin className="w-4 h-4" />
+                  LOCATION
+                </div>
                 <div
                   className="mt-3 rounded-xl overflow-hidden"
-                  style={{ border: "1px solid #fed7aa" }}
+                  style={{ border: "1.5px solid #fed7aa" }}
                 >
                   <iframe
                     title="RushBaskets Location"
@@ -550,33 +704,34 @@ export default function Contact() {
                   href="https://maps.google.com/?q=Hathras,Uttar+Pradesh+204101"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    marginTop: "10px",
-                    color: "#ff7b1d",
-                    fontSize: ".82rem",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                  }}
+                  className="flex items-center gap-2 mt-3 text-orange-500 text-sm font-bold hover:text-orange-700 transition-colors no-underline"
                 >
-                  <span>🗺️</span> Open in Google Maps →
+                  <MapPin className="w-4 h-4" />
+                  Open in Google Maps →
                 </a>
               </div>
 
-              {/* Quick facts */}
+              {/* Quick Facts */}
               <div className="side-card">
-                <span className="section-tag">⚡ QUICK FACTS</span>
+                <div className="pill mb-4">
+                  <Zap className="w-4 h-4" />
+                  QUICK FACTS
+                </div>
                 <div className="space-y-4 mt-3">
-                  {quickFacts.map(({ icon, title, desc }) => (
+                  {quickFacts.map(({ icon: Icon, title, desc, color, bg }) => (
                     <div key={title} className="flex items-start gap-3">
-                      <span className="text-2xl flex-shrink-0">{icon}</span>
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${bg}`}
+                      >
+                        <Icon className={`w-5 h-5 ${color}`} />
+                      </div>
                       <div>
-                        <p className="font-bold text-gray-800 text-sm">
+                        <p className="font-black text-gray-800 text-sm">
                           {title}
                         </p>
-                        <p className="text-gray-500 text-xs">{desc}</p>
+                        <p className="text-gray-500 text-xs font-semibold">
+                          {desc}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -585,7 +740,10 @@ export default function Contact() {
 
               {/* Social */}
               <div className="side-card">
-                <span className="section-tag">🌐 FOLLOW US</span>
+                <div className="pill mb-4">
+                  <Globe className="w-4 h-4" />
+                  FOLLOW US
+                </div>
                 <div className="flex gap-3 mt-3">
                   {socialLinks.map((s) => (
                     <a
@@ -604,38 +762,106 @@ export default function Contact() {
           </div>
         </section>
 
+        {/* Wave: Form → Stats */}
+        <div
+          style={{
+            background: "linear-gradient(to right,#f97316,#ea580c,#dc2626)",
+            marginTop: "-2px",
+          }}
+        >
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,20 C360,80 1080,0 1440,50 L1440,80 L0,80 Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+
         {/* ── STATS ── */}
-        <section className="py-14 px-6" style={{ background: "#ff7b1d" }}>
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { value: "10K+", label: "Orders Delivered" },
-              { value: "2500+", label: "Products Listed" },
-              { value: "24/7", label: "Support Available" },
-              { value: "4.9★", label: "Customer Rating" },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <div className="text-4xl font-extrabold text-white mb-1">
-                  {value}
+        <section
+          className="relative py-20 px-6 overflow-hidden"
+          style={{
+            background: "linear-gradient(to right,#f97316,#ea580c,#dc2626)",
+          }}
+        >
+          <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl opacity-10" />
+          <div className="absolute bottom-10 right-10 w-80 h-80 bg-orange-300 rounded-full blur-3xl opacity-10" />
+          <div className="max-w-5xl mx-auto relative z-10">
+            <div className="text-center mb-14">
+              <h2
+                className="text-3xl sm:text-5xl font-black text-white mb-4"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Trusted by Businesses Worldwide
+              </h2>
+              <p className="text-orange-100 text-lg max-w-xl mx-auto font-medium">
+                Thousands of stores already growing with{" "}
+                <strong className="text-white">RushBaskets</strong>
+              </p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stats.map(({ value, label, icon: Icon }) => (
+                <div key={label} className="stat-card">
+                  <div className="flex justify-center mb-3 text-orange-200">
+                    <Icon className="w-7 h-7" />
+                  </div>
+                  <div
+                    className="text-4xl sm:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-amber-300"
+                    style={{ fontFamily: "'Fraunces',serif" }}
+                  >
+                    {value}
+                  </div>
+                  <div className="text-orange-100 text-xs font-black uppercase tracking-widest">
+                    {label}
+                  </div>
                 </div>
-                <div className="text-orange-100 text-sm">{label}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
+
+        {/* Wave: Stats → FAQ */}
+        <div style={{ background: "#fff7ed", marginTop: "-2px" }}>
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,50 C480,0 960,80 1440,20 L1440,80 L0,80 Z"
+              fill="#f97316"
+            />
+          </svg>
+        </div>
 
         {/* ── FAQ ── */}
         <section
           ref={ref("faq")}
-          className="py-20 px-6 md:px-12"
+          className="py-20 px-6 md:px-14"
           style={{ background: "#fff7ed" }}
         >
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <span className="section-tag">❓ FAQ</span>
-              <h2 className="text-3xl font-extrabold text-gray-800">
-                Frequently Asked Questions
+              <div className="pill mb-5 justify-center">
+                <HelpCircle className="w-4 h-4" />
+                FAQ
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-black text-gray-900 mb-3"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Frequently Asked{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-500">
+                  Questions
+                </span>
               </h2>
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-500 text-lg font-medium">
                 Quick answers to common queries
               </p>
             </div>
@@ -645,47 +871,18 @@ export default function Contact() {
                   key={i}
                   className={`faq-item ${visible.faq ? `anim-fadeUp d${i}` : ""}`}
                 >
-                  <h4 className="font-bold text-gray-800 text-base mb-2">
-                    🛒 {faq.q}
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {faq.a}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURE STRIP ── */}
-        <section className="py-12 bg-white border-b border-orange-100">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="flex flex-wrap justify-center gap-8">
-              {[
-                {
-                  icon: "🔒",
-                  title: "Secure Payments",
-                  sub: "Multiple payment options",
-                },
-                { icon: "📱", title: "Easy Booking", sub: "Order in seconds" },
-                {
-                  icon: "⭐",
-                  title: "Rated Suppliers",
-                  sub: "Quality assured",
-                },
-                {
-                  icon: "🎯",
-                  title: "Live Tracking",
-                  sub: "Real-time updates",
-                },
-              ].map(({ icon, title, sub }) => (
-                <div key={title} className="flex items-center gap-3">
-                  <span className="text-3xl">{icon}</span>
-                  <div className="text-left">
-                    <div className="font-bold text-gray-800 text-sm">
-                      {title}
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <ShoppingCart className="w-4 h-4 text-white" />
                     </div>
-                    <div className="text-xs text-gray-500">{sub}</div>
+                    <div>
+                      <h4 className="font-black text-gray-800 text-base mb-2">
+                        {faq.q}
+                      </h4>
+                      <p className="text-gray-500 text-sm leading-relaxed font-medium">
+                        {faq.a}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -693,53 +890,96 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section
-          className="py-24 px-6 text-center relative overflow-hidden"
+        {/* Wave: FAQ → Feature Strip */}
+        <div style={{ background: "#fff", marginTop: "-2px" }}>
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,30 C360,80 1080,0 1440,60 L1440,80 L0,80 Z"
+              fill="#fff7ed"
+            />
+          </svg>
+        </div>
+
+        {/* ── FEATURE STRIP ── */}
+        <section className="py-14 bg-white">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {featureBanner.map(({ icon: Icon, title, sub, color, bg }) => (
+                <div key={title} className="feat-item">
+                  <div
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${bg}`}
+                  >
+                    <Icon className={`w-6 h-6 ${color}`} />
+                  </div>
+                  <div>
+                    <div className="font-black text-gray-900 text-sm">
+                      {title}
+                    </div>
+                    <div className="text-xs text-gray-500 font-semibold mt-0.5">
+                      {sub}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Wave: Feature Strip → CTA */}
+        <div
           style={{
-            background: "linear-gradient(135deg, #ff7b1d 0%, #c2410c 100%)",
+            background: "linear-gradient(135deg,#ff7b1d,#c2410c)",
+            marginTop: "-2px",
           }}
         >
-          <div
-            className="blob w-64 h-64 bg-white top-0 left-10"
-            style={{ position: "absolute" }}
-          ></div>
-          <div
-            className="blob w-80 h-80 bg-yellow-300 bottom-0 right-10"
-            style={{ position: "absolute" }}
-          ></div>
+          <svg
+            viewBox="0 0 1440 80"
+            className="w-full block"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0,60 C480,10 960,80 1440,20 L1440,80 L0,80 Z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+
+        {/* ── CTA ── */}
+        <section
+          className="relative py-28 px-6 text-center overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg,#ff7b1d 0%,#c2410c 100%)",
+          }}
+        >
+          <div className="absolute top-0 left-10 w-64 h-64 bg-white rounded-full blur-3xl opacity-10 blob-anim" />
+          <div className="absolute bottom-0 right-10 w-80 h-80 bg-yellow-300 rounded-full blur-3xl opacity-10 blob-anim bd2" />
 
           <div className="max-w-3xl mx-auto relative z-10">
-            <div className="text-5xl mb-5 anim-float">📱</div>
-            <h2 className="text-4xl font-extrabold text-white mb-4">
+            <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-6 anim-float">
+              <Smartphone className="w-10 h-10 text-white" />
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-black text-white mb-5"
+              style={{ fontFamily: "'Fraunces',serif" }}
+            >
               Ready to Grow Your Grocery Business?
             </h2>
-            <p className="text-orange-100 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+            <p className="text-orange-100 text-lg mb-10 max-w-xl mx-auto leading-relaxed font-medium">
               Download RushBaskets today and manage orders, inventory, and
               deliveries all from one powerful dashboard.
             </p>
             <a
               href="https://play.google.com/store/games?hl=en_IN"
-              style={{
-                background: "#fff",
-                color: "#ff7b1d",
-                fontWeight: 700,
-                borderRadius: "9999px",
-                padding: "14px 40px",
-                fontSize: "1.05rem",
-                boxShadow: "0 4px 20px rgba(0,0,0,.18)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-                transition: "background .2s, transform .2s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "#fff7ed")
-              }
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+              className="group inline-flex items-center gap-3 bg-white text-orange-600 font-black text-lg px-10 py-5 rounded-2xl shadow-2xl hover:bg-orange-50 transition-all hover:scale-105"
             >
-              📱 Download the App
+              <Smartphone className="w-6 h-6" />
+              Download the App
             </a>
           </div>
         </section>

@@ -1,7 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/image 1.png";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaShoppingBag,
+  FaBoxOpen,
+  FaChartBar,
+  FaBell,
+  FaLock,
+  FaFileAlt,
+  FaUndoAlt,
+  FaHome,
+  FaInfoCircle,
+  FaEnvelope,
+  FaLeaf,
+  FaAppleAlt,
+  FaHeart,
+} from "react-icons/fa";
 
 export default function Footer() {
   const socialLinks = [
@@ -17,6 +33,25 @@ export default function Footer() {
       color: "#e1306c",
       link: "https://www.instagram.com/rushbaskets?igsh=aWtsdmJ1Y2VocDB3",
     },
+  ];
+
+  const featurePills = [
+    { icon: <FaShoppingBag />, label: "Orders" },
+    { icon: <FaBoxOpen />, label: "Inventory" },
+    { icon: <FaChartBar />, label: "Analytics" },
+    { icon: <FaBell />, label: "Alerts" },
+  ];
+
+  const quickLinks = [
+    { to: "/privacy", label: "Privacy Policy", icon: <FaLock /> },
+    { to: "/terms", label: "Terms & Conditions", icon: <FaFileAlt /> },
+    { to: "/refund", label: "Refund & Return Policy", icon: <FaUndoAlt /> },
+  ];
+
+  const exploreLinks = [
+    { to: "/", label: "Home", icon: <FaHome /> },
+    { to: "/about", label: "About Us", icon: <FaInfoCircle /> },
+    { to: "/contact", label: "Contact Us", icon: <FaEnvelope /> },
   ];
 
   return (
@@ -49,8 +84,8 @@ export default function Footer() {
           50% { opacity: 0.7; transform: scale(1.08); }
         }
 
-        .footer-font { font-family: 'Poppins', sans-serif; }
-        .footer-body-font { font-family: 'Nunito', sans-serif; }
+        .footer-font { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .footer-body-font { font-family: 'Nunito', sans-serif; font-weight: 700; }
 
         .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
         .animate-float { animation: float 3.5s ease-in-out infinite; }
@@ -88,7 +123,9 @@ export default function Footer() {
 
         .footer-link {
           position: relative;
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
           font-family: 'Nunito', sans-serif;
           transition: all 0.3s ease;
         }
@@ -174,6 +211,10 @@ export default function Footer() {
           font-size: 0.7rem;
           color: #fde68a;
           letter-spacing: 0.04em;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          font-weight: 700;
         }
 
         .heading-line {
@@ -187,6 +228,12 @@ export default function Footer() {
           width: 36px; height: 3px;
           border-radius: 9999px;
           background: rgba(255,255,255,0.5);
+        }
+
+        .icon-inline {
+          display: inline-flex;
+          align-items: center;
+          vertical-align: middle;
         }
       `}</style>
 
@@ -217,20 +264,25 @@ export default function Footer() {
                 }}
               />
             </div>
-            <p className="footer-body-font text-orange-200 max-w-xl mx-auto text-sm mt-1">
+            <p className="footer-body-font text-orange-200 max-w-xl mx-auto text-sm mt-1 font-bold">
               Fast, fresh &amp; reliable grocery delivery — right to your
-              doorstep 🥬🍎
+              doorstep{" "}
+              <span className="icon-inline">
+                <FaLeaf style={{ color: "#86efac" }} />
+              </span>{" "}
+              <span className="icon-inline">
+                <FaAppleAlt style={{ color: "#fca5a5" }} />
+              </span>
             </p>
 
             {/* Feature pills */}
             <div className="flex flex-wrap justify-center gap-2 mt-4">
-              {["🛍️ Orders", "📦 Inventory", "📊 Analytics", "🔔 Alerts"].map(
-                (label) => (
-                  <span key={label} className="badge-pill">
-                    {label}
-                  </span>
-                ),
-              )}
+              {featurePills.map(({ icon, label }) => (
+                <span key={label} className="badge-pill">
+                  <span className="icon-inline">{icon}</span>
+                  {label}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -244,12 +296,12 @@ export default function Footer() {
               >
                 About Us
               </h3>
-              <p className="footer-body-font text-xs leading-relaxed text-orange-200 mb-2">
+              <p className="footer-body-font text-xs leading-relaxed text-orange-200 mb-2 font-bold">
                 RushBaskets is your go-to e-commerce management platform for
                 grocery operations — making inventory, orders, and delivery
                 seamless.
               </p>
-              <p className="footer-body-font text-xs leading-relaxed text-orange-200">
+              <p className="footer-body-font text-xs leading-relaxed text-orange-200 font-bold">
                 Our mission: fresh produce, zero hassle, lightning-fast
                 fulfilment for every customer order.
               </p>
@@ -264,16 +316,13 @@ export default function Footer() {
                 Quick Links
               </h3>
               <ul className="space-y-2">
-                {[
-                  { to: "/privacy", label: "🔒 Privacy Policy" },
-                  { to: "/terms", label: "📄 Terms & Conditions" },
-                  { to: "/refund", label: "📄 Refund & Return Policy " },
-                ].map(({ to, label }) => (
+                {quickLinks.map(({ to, label, icon }) => (
                   <li key={to}>
                     <Link
                       to={to}
-                      className="footer-link text-orange-200 text-xs"
+                      className="footer-link text-orange-200 text-xs font-bold"
                     >
+                      <span className="icon-inline">{icon}</span>
                       {label}
                     </Link>
                   </li>
@@ -290,27 +339,15 @@ export default function Footer() {
                 Explore
               </h3>
               <ul className="space-y-2">
-                {[
-                  { to: "/", label: "🏠 Home" },
-                  { to: "/about", label: "ℹ️ About Us" },
-                  { to: "/contact", label: "📬 Contact Us" },
-                ].map(({ to, label, isAnchor }) => (
+                {exploreLinks.map(({ to, label, icon }) => (
                   <li key={to}>
-                    {isAnchor ? (
-                      <a
-                        href={to}
-                        className="footer-link text-orange-200 text-xs"
-                      >
-                        {label}
-                      </a>
-                    ) : (
-                      <Link
-                        to={to}
-                        className="footer-link text-orange-200 text-xs"
-                      >
-                        {label}
-                      </Link>
-                    )}
+                    <Link
+                      to={to}
+                      className="footer-link text-orange-200 text-xs font-bold"
+                    >
+                      <span className="icon-inline">{icon}</span>
+                      {label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -318,24 +355,11 @@ export default function Footer() {
 
             {/* Contact */}
             <div className="section-card opacity-0 animate-fadeInUp delay-400">
-              {/* <h3
-                className="text-base font-bold mb-3 heading-line"
-                style={{ color: "#fde68a" }}
-              >
-                Contact Us
-              </h3> */}
-              <ul className="space-y-3 text-xs footer-body-font">
-                {/* <li className="contact-item">
-                  <span className="text-orange-300">📞 Phone:</span>{" "}
-                  <a
-                    href="tel:+918449667337"
-                    className="text-orange-100 hover:text-yellow-300 transition-colors ml-1"
-                  >
-                    +91 84496 67337
-                  </a>
-                </li> */}
+              <ul className="space-y-3 text-xs footer-body-font font-bold">
                 <li className="contact-item">
-                  <span className="text-orange-300">📧 Email:</span>{" "}
+                  <span className="text-orange-300 inline-flex items-center gap-1">
+                    <FaEnvelope /> Email:
+                  </span>{" "}
                   <a
                     href="mailto:info.rushbaskets@gmail.com"
                     className="text-orange-100 hover:text-yellow-300 transition-colors break-all ml-1"
@@ -343,12 +367,6 @@ export default function Footer() {
                     info.rushbaskets@gmail.com
                   </a>
                 </li>
-                {/* <li className="contact-item">
-                  <span className="text-orange-300">📍 Address:</span>{" "}
-                  <span className="text-orange-100 ml-1">
-                    Hathras, Uttar Pradesh, India — 204101
-                  </span>
-                </li> */}
               </ul>
 
               {/* Social icons */}
@@ -358,7 +376,8 @@ export default function Footer() {
                     key={name}
                     href={link}
                     title={name}
-                    className={`social-btn w-8 h-8 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-sm shadow-md`}
+                    className={`social-btn w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-md text-white`}
+                    style={{ background: color }}
                   >
                     {icon}
                   </a>
@@ -371,12 +390,18 @@ export default function Footer() {
           <div className="relative mb-5 flex flex-col items-center gap-2">
             <div className="divider-wave"></div>
             <span className="badge-pill">
-              🥬 Trusted by thousands of grocery shoppers 🍎
+              <span className="icon-inline">
+                <FaLeaf style={{ color: "#86efac" }} />
+              </span>
+              Trusted by thousands of grocery shoppers
+              <span className="icon-inline">
+                <FaAppleAlt style={{ color: "#fca5a5" }} />
+              </span>
             </span>
           </div>
 
           {/* Bottom bar */}
-          <div className="text-center text-xs opacity-0 animate-fadeInUp delay-400 footer-body-font">
+          <div className="text-center text-xs opacity-0 animate-fadeInUp delay-400 footer-body-font font-bold">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-orange-200">
               <span className="flex items-center gap-2">
                 <span className="font-bold gradient-text text-sm">
@@ -386,8 +411,8 @@ export default function Footer() {
               </span>
               <span>2024 © All Rights Reserved</span>
               <span className="text-orange-400 hidden sm:inline">|</span>
-              <span className="text-yellow-200">
-                Made with 🧡 by{" "}
+              <span className="text-yellow-200 inline-flex items-center gap-1">
+                Made with <FaHeart style={{ color: "#fb923c" }} /> by{" "}
                 <a
                   href="https://www.softfyr.com/"
                   target="_blank"

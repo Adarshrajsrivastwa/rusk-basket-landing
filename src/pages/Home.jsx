@@ -1,294 +1,285 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import groceryHero from "../assets/img104.jpg";
 import aboutImg from "../assets/img105.jpg";
 
-// Grocery SVG illustrations as inline components
-const GroceryBasketSVG = () => (
-  <svg
-    viewBox="0 0 400 320"
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-full max-w-md"
-  >
-    {/* Background circle */}
-    <circle cx="200" cy="170" r="130" fill="rgba(255,255,255,0.15)" />
-    <circle cx="200" cy="170" r="100" fill="rgba(255,255,255,0.1)" />
+import prod1 from "../assets/images101.jpg"; // Oranges
+import prod2 from "../assets/images102.jpg"; // Dettol
+import prod3 from "../assets/107.jpg"; // Horlicks
+import prod4 from "../assets/images103.jpg"; // Grocery Basket
 
-    {/* Basket */}
-    <path
-      d="M100 190 L120 270 L280 270 L300 190 Z"
-      fill="#fff"
-      opacity="0.95"
-    />
-    <path d="M100 190 L300 190" stroke="#e06010" strokeWidth="4" fill="none" />
-    {/* Basket weave lines */}
-    <line
-      x1="140"
-      y1="190"
-      x2="128"
-      y2="270"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    <line
-      x1="180"
-      y1="190"
-      x2="180"
-      y2="270"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    <line
-      x1="220"
-      y1="190"
-      x2="220"
-      y2="270"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    <line
-      x1="260"
-      y1="190"
-      x2="272"
-      y2="270"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    <line
-      x1="110"
-      y1="220"
-      x2="290"
-      y2="220"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    <line
-      x1="115"
-      y1="248"
-      x2="285"
-      y2="248"
-      stroke="#f0d0b0"
-      strokeWidth="2"
-    />
-    {/* Handle */}
-    <path
-      d="M150 190 Q200 130 250 190"
-      stroke="#fff"
-      strokeWidth="8"
-      fill="none"
-      strokeLinecap="round"
-    />
+import {
+  ShoppingCart,
+  Package,
+  BarChart3,
+  Truck,
+  Rocket,
+  Activity,
+  CheckCircle,
+  Shield,
+  Zap,
+  Leaf,
+  Star,
+  ChevronRight,
+  Smartphone,
+  HeartHandshake,
+  Carrot,
+  Apple,
+  Wheat,
+  Droplets,
+  ShoppingBag,
+  BadgeCheck,
+  Clock,
+  Tag,
+  ChevronDown,
+  ChevronUp,
+  PhoneCall,
+} from "lucide-react";
 
-    {/* Carrot */}
-    <ellipse
-      cx="155"
-      cy="175"
-      rx="10"
-      ry="28"
-      fill="#ff7b1d"
-      transform="rotate(-20 155 175)"
-    />
-    <path
-      d="M148 150 L143 135 M155 148 L153 133 M162 151 L160 136"
-      stroke="#4ade80"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-
-    {/* Apple red */}
-    <circle cx="200" cy="172" r="22" fill="#ef4444" />
-    <path
-      d="M200 152 Q205 145 210 148"
-      stroke="#4ade80"
-      strokeWidth="2.5"
-      fill="none"
-      strokeLinecap="round"
-    />
-    <ellipse
-      cx="193"
-      cy="165"
-      rx="5"
-      ry="8"
-      fill="rgba(255,255,255,0.25)"
-      transform="rotate(-20 193 165)"
-    />
-
-    {/* Broccoli */}
-    <rect x="235" y="175" width="8" height="20" fill="#16a34a" />
-    <circle cx="239" cy="165" r="14" fill="#22c55e" />
-    <circle cx="228" cy="168" r="10" fill="#22c55e" />
-    <circle cx="250" cy="168" r="10" fill="#22c55e" />
-    <circle cx="233" cy="158" r="9" fill="#16a34a" />
-    <circle cx="245" cy="158" r="9" fill="#16a34a" />
-
-    {/* Milk carton */}
-    <rect
-      x="265"
-      y="155"
-      width="28"
-      height="38"
-      rx="3"
-      fill="#fff"
-      opacity="0.95"
-    />
-    <path d="M265 155 L279 142 L293 155" fill="#e2e8f0" />
-    <rect
-      x="270"
-      y="165"
-      width="18"
-      height="12"
-      rx="2"
-      fill="#3b82f6"
-      opacity="0.7"
-    />
-    <text
-      x="279"
-      y="174"
-      fontSize="7"
-      fontWeight="bold"
-      fill="#fff"
-      textAnchor="middle"
-    >
-      MILK
-    </text>
-
-    {/* Lemon */}
-    <ellipse cx="130" cy="165" rx="16" ry="12" fill="#fbbf24" />
-    <ellipse
-      cx="127"
-      cy="163"
-      rx="5"
-      ry="4"
-      fill="rgba(255,255,255,0.3)"
-      transform="rotate(-20 127 163)"
-    />
-
-    {/* Sparkle dots */}
-    <circle cx="80" cy="140" r="4" fill="rgba(255,255,255,0.6)" />
-    <circle cx="320" cy="150" r="3" fill="rgba(255,255,255,0.5)" />
-    <circle cx="90" cy="220" r="3" fill="rgba(255,255,255,0.4)" />
-    <circle cx="315" cy="230" r="5" fill="rgba(255,255,255,0.4)" />
-  </svg>
-);
-
-const FreshDeliverySVG = () => (
-  <svg
-    viewBox="0 0 300 260"
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-64 h-64 mx-auto"
-  >
-    <circle cx="150" cy="130" r="110" fill="#fff7ed" />
-    <rect x="70" y="130" width="160" height="90" rx="6" fill="#ff7b1d" />
-    <rect x="70" y="130" width="160" height="20" rx="6" fill="#e06010" />
-    <rect x="115" y="130" width="70" height="35" rx="3" fill="#fde68a" />
-    <text
-      x="150"
-      y="154"
-      fontSize="10"
-      fontWeight="bold"
-      fill="#7c2d00"
-      textAnchor="middle"
-    >
-      FRESH
-    </text>
-    <path d="M100 130 Q110 100 120 130" fill="#22c55e" />
-    <circle cx="150" cy="118" r="14" fill="#ef4444" />
-    <path
-      d="M150 105 Q155 98 160 101"
-      stroke="#22c55e"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-    />
-    <path d="M180 130 Q190 105 200 130" fill="#fbbf24" />
-    <circle cx="100" cy="220" r="18" fill="#374151" />
-    <circle cx="100" cy="220" r="9" fill="#9ca3af" />
-    <circle cx="200" cy="220" r="18" fill="#374151" />
-    <circle cx="200" cy="220" r="9" fill="#9ca3af" />
-    <line
-      x1="30"
-      y1="160"
-      x2="65"
-      y2="160"
-      stroke="#ff7b1d"
-      strokeWidth="3"
-      strokeLinecap="round"
-      opacity="0.5"
-    />
-    <line
-      x1="20"
-      y1="175"
-      x2="65"
-      y2="175"
-      stroke="#ff7b1d"
-      strokeWidth="3"
-      strokeLinecap="round"
-      opacity="0.4"
-    />
-    <line
-      x1="35"
-      y1="190"
-      x2="65"
-      y2="190"
-      stroke="#ff7b1d"
-      strokeWidth="3"
-      strokeLinecap="round"
-      opacity="0.3"
-    />
-  </svg>
-);
-
+/* ─────────────── DATA ─────────────── */
 const features = [
   {
-    icon: "🛒",
+    icon: <ShoppingCart className="w-9 h-9" />,
     title: "Order Management",
-    desc: "Track and manage all customer orders in real-time with full visibility from placement to delivery.",
+    desc: "Track every order in real-time from placement to doorstep with automated status updates.",
     tags: ["Real-time", "Tracking"],
-    tagColors: ["bg-orange-100 text-orange-700", "bg-amber-100 text-amber-700"],
-    border: "border-orange-500",
-    titleColor: "text-orange-600",
+    tc: ["bg-orange-100 text-orange-700", "bg-amber-100 text-amber-700"],
+    grad: "from-orange-400 to-orange-600",
   },
   {
-    icon: "📦",
+    icon: <Package className="w-9 h-9" />,
     title: "Inventory Control",
-    desc: "Keep stock levels accurate with smart inventory alerts, category management, and restocking tools.",
+    desc: "Smart stock alerts, category management, and automated restocking keep shelves perfectly stocked.",
     tags: ["Auto Alerts", "Categories"],
-    tagColors: [
-      "bg-green-100 text-green-700",
-      "bg-emerald-100 text-emerald-700",
-    ],
-    border: "border-green-500",
-    titleColor: "text-green-600",
+    tc: ["bg-green-100 text-green-700", "bg-emerald-100 text-emerald-700"],
+    grad: "from-green-500 to-emerald-600",
   },
   {
-    icon: "📊",
+    icon: <BarChart3 className="w-9 h-9" />,
     title: "Analytics Dashboard",
-    desc: "Gain insights on sales trends, customer behavior, and revenue with powerful reporting tools.",
+    desc: "Deep insights on sales trends, customer behaviour, and revenue with powerful reporting.",
     tags: ["Insights", "Revenue"],
-    tagColors: ["bg-blue-100 text-blue-700", "bg-indigo-100 text-indigo-700"],
-    border: "border-blue-500",
-    titleColor: "text-blue-600",
+    tc: ["bg-blue-100 text-blue-700", "bg-indigo-100 text-indigo-700"],
+    grad: "from-blue-500 to-blue-700",
   },
 ];
 
 const stats = [
-  { value: "10K+", label: "Orders Delivered" },
-  { value: "2500+", label: "Products Listed" },
-  { value: "24/7", label: "Support" },
-  { value: "4.9★", label: "Customer Rating" },
+  {
+    value: "10K+",
+    label: "Orders Delivered",
+    icon: <ShoppingCart className="w-7 h-7" />,
+  },
+  {
+    value: "2500+",
+    label: "Products Listed",
+    icon: <Package className="w-7 h-7" />,
+  },
+  {
+    value: "24/7",
+    label: "Support Available",
+    icon: <HeartHandshake className="w-7 h-7" />,
+  },
+  {
+    value: "4.9★",
+    label: "Customer Rating",
+    icon: <Star className="w-7 h-7" />,
+  },
 ];
 
-const groceryItems = [
-  { emoji: "🥦", name: "Vegetables" },
-  { emoji: "🍎", name: "Fruits" },
-  { emoji: "🥛", name: "Dairy" },
-  { emoji: "🌾", name: "Grains" },
-  { emoji: "🧴", name: "Personal Care" },
+const categories = [
+  { icon: <Carrot className="w-5 h-5 text-orange-500" />, name: "Vegetables" },
+  { icon: <Apple className="w-5 h-5 text-red-500" />, name: "Fruits" },
+  { icon: <Droplets className="w-5 h-5 text-blue-500" />, name: "Dairy" },
+  { icon: <Wheat className="w-5 h-5 text-amber-500" />, name: "Grains" },
+  {
+    icon: <ShoppingBag className="w-5 h-5 text-purple-500" />,
+    name: "Personal Care",
+  },
 ];
 
+/* ── Products — names match actual images ── */
+const products = [
+  {
+    id: 1,
+    img: prod1,
+    name: "Fresh Navel Oranges",
+    category: "Fruits",
+    price: 89,
+    unit: "1 kg",
+    rating: 4.8,
+    reviews: 234,
+    tag: "Farm Fresh",
+    tagColor: "#16a34a",
+    tagBg: "#dcfce7",
+    desc: "Sun-ripened, juicy navel oranges sourced directly from orchards.",
+  },
+  {
+    id: 2,
+    img: prod2,
+    name: "Dettol Antiseptic Liquid",
+    category: "Personal Care",
+    price: 145,
+    unit: "250 ml",
+    rating: 4.9,
+    reviews: 512,
+    tag: "Best Seller",
+    tagColor: "#ea580c",
+    tagBg: "#fff7ed",
+    desc: "Trusted antiseptic liquid for wounds, skin & surface disinfection.",
+  },
+  {
+    id: 3,
+    img: prod3,
+    name: "Horlicks Classic Malt",
+    category: "Health Drinks",
+    price: 199,
+    unit: "500 g",
+    rating: 4.7,
+    reviews: 891,
+    tag: "Popular",
+    tagColor: "#1d4ed8",
+    tagBg: "#eff6ff",
+    desc: "Classic nutritious malt drink for strength, stamina & immunity.",
+  },
+  {
+    id: 4,
+    img: prod4,
+    name: "Daily Essentials Basket",
+    category: "Grocery",
+    price: 499,
+    unit: "Combo",
+    rating: 4.6,
+    reviews: 317,
+    tag: "New Arrival",
+    tagColor: "#7c3aed",
+    tagBg: "#f5f3ff",
+    desc: "Curated basket of everyday groceries — fresh vegetables & more.",
+  },
+];
+
+/* ── FAQ ── */
+const faqs = [
+  {
+    q: "How fast is delivery in my area?",
+    a: "We deliver within 30 minutes in most serviceable areas. Delivery time may vary slightly based on your location and order volume. You can check estimated delivery time at checkout.",
+  },
+  {
+    q: "Are the products fresh and quality-assured?",
+    a: "Absolutely. All our fruits, vegetables and perishables are sourced daily from verified suppliers and farms. We conduct quality checks at every step before dispatch.",
+  },
+  {
+    q: "What payment methods are accepted?",
+    a: "We accept UPI, credit/debit cards, net banking, and Cash on Delivery. All online payments are secured with 256-bit SSL encryption.",
+  },
+  {
+    q: "Can I return or replace a product?",
+    a: "Yes. If any product is damaged, expired, or incorrect, you can raise a return/replacement request within 24 hours of delivery. We'll resolve it promptly.",
+  },
+  {
+    q: "Is there a minimum order value?",
+    a: "There is no minimum order requirement. However, orders above ₹299 qualify for free delivery. A small delivery fee applies for smaller orders.",
+  },
+  {
+    q: "How do I track my order?",
+    a: "Once your order is placed, you'll receive real-time tracking updates via SMS and in-app notifications. You can also view live order status from the Orders section.",
+  },
+];
+
+/* ─────────────── PRODUCT CARD ─────────────── */
+function ProductCard({ product }) {
+  return (
+    <div className="pro-card group">
+      <div className="pro-img-wrap">
+        <img
+          src={product.img}
+          alt={product.name}
+          className="pro-img group-hover:scale-[1.07]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/12 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+      </div>
+
+      <div className="pro-body">
+        <div className="flex items-center justify-between mb-2.5">
+          <span
+            className="text-xs font-black uppercase tracking-wider"
+            style={{ color: product.tagColor }}
+          >
+            {product.category}
+          </span>
+          <span
+            className="text-xs font-bold px-2.5 py-0.5 rounded-full"
+            style={{ background: product.tagBg, color: product.tagColor }}
+          >
+            {product.tag}
+          </span>
+        </div>
+
+        <h3 className="pro-name">{product.name}</h3>
+        <p className="pro-desc">{product.desc}</p>
+
+        <div className="flex items-center gap-1.5 mb-4">
+          <div className="flex gap-0.5">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`}
+              />
+            ))}
+          </div>
+          <span className="text-xs text-gray-400 font-semibold">
+            {product.rating} &nbsp;·&nbsp; {product.reviews} reviews
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between pt-3.5 border-t border-gray-100">
+          <div>
+            <span className="text-2xl font-black text-gray-900">
+              ₹{product.price}
+            </span>
+            <span className="text-xs text-gray-400 ml-1.5 font-medium">
+              / {product.unit}
+            </span>
+          </div>
+          <span className="text-xs text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-1.5">
+            ✓ In Stock
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────── FAQ ITEM ─────────────── */
+function FAQItem({ q, a, index }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className={`faq-item ${open ? "faq-open" : ""}`}
+      onClick={() => setOpen(!open)}
+    >
+      <div className="faq-header">
+        <div className="faq-num">{String(index + 1).padStart(2, "0")}</div>
+        <span className="faq-q">{q}</span>
+        <div className="faq-chevron">
+          {open ? (
+            <ChevronUp className="w-5 h-5 text-orange-500" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-gray-400" />
+          )}
+        </div>
+      </div>
+      <div className={`faq-body ${open ? "faq-open-body" : ""}`}>
+        <p className="faq-ans">{a}</p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────── HOME ─────────────── */
 export default function Home() {
   const navigate = useNavigate();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -296,169 +287,296 @@ export default function Home() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fraunces:wght@700;900&display=swap');
+        *,*::before,*::after { box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; }
+        body { margin:0; padding:0; background:#fff; }
 
-        * { font-family: 'Poppins', sans-serif; }
-
-        body {
-          margin: 0;
-          padding: 0;
-          background: #fff;
+        @keyframes blob {
+          0%,100%{ transform:translate(0,0) scale(1); }
+          33%    { transform:translate(26px,-42px) scale(1.07); }
+          66%    { transform:translate(-16px,16px) scale(0.94); }
         }
+        .blob { animation:blob 9s infinite ease-in-out; }
+        .bd2  { animation-delay:2.4s; }
+        .bd4  { animation-delay:4.7s; }
 
-        .hero-bg {
-          background: linear-gradient(135deg, #ff7b1d 0%, #e06010 60%, #c2410c 100%);
+        @keyframes fadeUp {
+          from { opacity:0; transform:translateY(30px); }
+          to   { opacity:1; transform:translateY(0); }
         }
+        .fu  { animation:fadeUp .75s ease both; }
+        .fu2 { animation:fadeUp .75s .15s ease both; }
+        .fu3 { animation:fadeUp .75s .30s ease both; }
+        .fu4 { animation:fadeUp .75s .45s ease both; }
 
-        .btn-primary {
-          background: #fff;
-          color: #ff7b1d;
-          font-weight: 700;
-          border-radius: 9999px;
-          padding: 14px 32px;
-          font-size: 1rem;
-          transition: background 0.2s, box-shadow 0.2s;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          border: none;
-        }
-        .btn-primary:hover {
-          background: #fff7ed;
-          box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+        /* ── pill ── */
+        .pill {
+          display:inline-flex; align-items:center; gap:6px;
+          background:#fff7ed; color:#c2410c;
+          border:1.5px solid #fed7aa; border-radius:9999px;
+          padding:7px 16px; font-size:.74rem; font-weight:800; letter-spacing:.06em;
         }
 
-        .btn-outline {
-          background: transparent;
-          color: #fff;
-          font-weight: 600;
-          border-radius: 9999px;
-          padding: 13px 32px;
-          font-size: 1rem;
-          border: 2px solid rgba(255,255,255,0.7);
-          transition: background 0.2s, border-color 0.2s;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
+        /* ── chip ── */
+        .chip {
+          display:inline-flex; align-items:center; gap:8px;
+          background:#fff; border:1.5px solid #fed7aa; border-radius:9999px;
+          padding:10px 20px; font-weight:700; color:#9a3412; font-size:.85rem;
+          cursor:pointer; transition:all .25s;
         }
-        .btn-outline:hover {
-          background: rgba(255,255,255,0.12);
-          border-color: #fff;
+        .chip:hover { background:#fff7ed; box-shadow:0 6px 18px rgba(249,115,22,.18); transform:translateY(-3px); }
+
+        /* ── feat-card ── */
+        .feat-card {
+          background:#fff; border-radius:24px; padding:32px;
+          border:1.5px solid #ffedd5; box-shadow:0 4px 20px rgba(0,0,0,.04);
+          transition:box-shadow .35s, transform .35s, border-color .35s;
+        }
+        .feat-card:hover { box-shadow:0 24px 56px rgba(0,0,0,.10); transform:translateY(-10px); border-color:#fb923c; }
+        .feat-card:hover .icon-wrap { transform:scale(1.1) rotate(5deg); }
+        .icon-wrap {
+          display:inline-flex; align-items:center; justify-content:center;
+          width:64px; height:64px; border-radius:18px; color:#fff;
+          margin-bottom:20px; box-shadow:0 8px 20px rgba(0,0,0,.16); transition:transform .3s;
         }
 
-        .feature-card {
-          background: #fff;
-          border-radius: 16px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-          padding: 32px;
-          transition: box-shadow 0.25s, transform 0.25s;
-          border-top: 4px solid;
+        /* ── product card ── */
+        .pro-card {
+          background:#fff; border-radius:22px;
+          border:1.5px solid #f1f5f9;
+          box-shadow:0 2px 12px rgba(0,0,0,.05);
+          overflow:hidden; cursor:default;
+          transition:box-shadow .35s, transform .35s, border-color .35s;
         }
-        .feature-card:hover {
-          box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-          transform: translateY(-4px);
+        .pro-card:hover {
+          box-shadow:0 24px 56px rgba(249,115,22,.13);
+          transform:translateY(-10px); border-color:#fdba74;
+        }
+        .pro-img-wrap { position:relative; overflow:hidden; height:220px; background:#f8fafc; }
+        .pro-img { width:100%; height:100%; object-fit:cover; transition:transform .55s cubic-bezier(.25,.46,.45,.94); }
+        .pro-body { padding:20px; }
+        .pro-name {
+          font-family:'Fraunces',serif;
+          font-size:1.1rem; font-weight:900; color:#111827;
+          line-height:1.3; margin:0 0 8px 0;
+        }
+        .pro-desc { font-size:.82rem; color:#9ca3af; line-height:1.6; margin:0 0 12px 0; }
+
+        /* ── trust badge ── */
+        .tbadge {
+          display:inline-flex; align-items:center; gap:8px;
+          background:#fff; border:1.5px solid #fed7aa; border-radius:9999px;
+          padding:8px 18px; font-size:.82rem; font-weight:700; color:#374151;
+          box-shadow:0 2px 8px rgba(0,0,0,.04); transition:all .2s;
+        }
+        .tbadge:hover { border-color:#fb923c; box-shadow:0 4px 14px rgba(249,115,22,.14); }
+
+        /* ── FAQ ── */
+        .faq-item {
+          background:#fff; border:1.5px solid #f1f5f9;
+          border-radius:18px; overflow:hidden; cursor:pointer;
+          transition:border-color .3s, box-shadow .3s;
+          user-select:none;
+        }
+        .faq-item:hover, .faq-open {
+          border-color:#fb923c; box-shadow:0 8px 32px rgba(249,115,22,.10);
+        }
+        .faq-header { display:flex; align-items:center; gap:14px; padding:20px 24px; }
+        .faq-num {
+          min-width:36px; height:36px; flex-shrink:0;
+          background:linear-gradient(135deg,#f97316,#ea580c);
+          color:#fff; border-radius:10px;
+          display:flex; align-items:center; justify-content:center;
+          font-size:.78rem; font-weight:900; letter-spacing:.04em;
+        }
+        .faq-q { flex:1; font-weight:800; font-size:.96rem; color:#111827; line-height:1.4; }
+        .faq-chevron { flex-shrink:0; }
+        .faq-body {
+          max-height:0; overflow:hidden; padding:0 24px;
+          transition:max-height .4s cubic-bezier(.4,0,.2,1), padding .3s;
+        }
+        .faq-open-body { max-height:200px; padding:0 24px 20px; }
+        .faq-ans {
+          font-size:.9rem; color:#6b7280; line-height:1.75; margin:0;
+          border-left:3px solid #fed7aa; padding-left:16px;
         }
 
+        /* ── stat card ── */
         .stat-card {
-          text-align: center;
-          padding: 16px;
+          background:rgba(255,255,255,.15); backdrop-filter:blur(12px);
+          border-radius:22px; padding:28px; text-align:center;
+          box-shadow:0 8px 32px rgba(0,0,0,.1);
+          transition:background .3s, transform .3s;
         }
-
-        .grocery-chip {
-          background: #fff7ed;
-          border: 1px solid #fed7aa;
-          border-radius: 9999px;
-          padding: 10px 20px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-weight: 500;
-          color: #7c2d00;
-          font-size: 0.95rem;
-          transition: background 0.2s, box-shadow 0.2s;
-          cursor: default;
-        }
-        .grocery-chip:hover {
-          background: #ffedd5;
-          box-shadow: 0 2px 8px rgba(255,123,29,0.15);
-        }
-
-        .section-tag {
-          display: inline-block;
-          background: #ffedd5;
-          color: #ff7b1d;
-          border-radius: 9999px;
-          padding: 4px 16px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          letter-spacing: 0.05em;
-          margin-bottom: 12px;
-        }
+        .stat-card:hover { background:rgba(255,255,255,.25); transform:translateY(-5px); }
       `}</style>
 
       <div className="text-gray-800">
-        {/* ── Hero ── */}
-        <section className="hero-bg text-white py-20 px-6 md:px-12 overflow-hidden">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-            {/* Text */}
-            <div className="md:w-1/2">
-              <span
-                className="section-tag"
-                style={{ background: "rgba(255,255,255,0.2)", color: "#fff" }}
+        {/* ══ HERO ══ */}
+        <section className="relative bg-white overflow-hidden">
+          <div className="absolute top-8 left-8 w-80 h-80 bg-orange-100 rounded-full blur-3xl opacity-60 blob" />
+          <div className="absolute top-28 right-12 w-96 h-96 bg-amber-50 rounded-full blur-3xl opacity-70 blob bd2" />
+          <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-red-50 rounded-full blur-3xl opacity-50 blob bd4" />
+
+          <div className="max-w-7xl mx-auto px-6 md:px-14 py-24 relative z-10 flex flex-col md:flex-row items-center gap-14">
+            <div className="md:w-1/2 fu">
+              <div className="pill mb-7">
+                <ShoppingCart className="w-4 h-4" />
+                GROCERY MANAGEMENT PLATFORM
+              </div>
+              <h1
+                className="text-5xl md:text-6xl font-black leading-[1.08] mb-6 text-gray-900"
+                style={{ fontFamily: "'Fraunces',serif" }}
               >
-                🛒 E-COMMERCE MANAGEMENT
-              </span>
-              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5 mt-2">
-                Manage Your Grocery
+                Your Grocery Store,
                 <br />
-                <span style={{ color: "#fde68a" }}>Business Smarter</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-red-500">
+                  Smarter & Faster
+                </span>
               </h1>
-              <p className="text-lg mb-8 text-orange-100 leading-relaxed">
-                RushBaskets gives you a powerful admin platform to manage
-                orders, inventory, analytics, and deliveries — all in one place.
+              <p className="text-lg text-gray-500 leading-relaxed mb-9 fu2">
+                RushBaskets delivers everything from farm-fresh produce to daily
+                essentials — managed through a powerful admin platform built for
+                modern grocery businesses.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a href="#download" className="btn-primary">
-                  📱 Download App
+              <div className="flex flex-col sm:flex-row gap-4 fu3">
+                <a
+                  href="#products"
+                  className="group inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold px-8 py-4 rounded-2xl shadow-xl hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  <span>Shop Now</span>
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
-                <a href="#about" className="btn-outline">
-                  Learn More →
+                <a
+                  href="#about"
+                  className="inline-flex items-center gap-2 border-2 border-orange-300 text-orange-600 font-bold px-8 py-4 rounded-2xl hover:bg-orange-600 hover:text-white hover:border-orange-600 transition-all"
+                >
+                  <Activity className="w-4 h-4" />
+                  <span>Learn More</span>
                 </a>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-5 fu4">
+                {[
+                  {
+                    i: <BadgeCheck className="w-4 h-4 text-green-500" />,
+                    t: "Verified Suppliers",
+                  },
+                  {
+                    i: <Clock className="w-4 h-4 text-orange-500" />,
+                    t: "30-min Delivery",
+                  },
+                  {
+                    i: <Shield className="w-4 h-4 text-blue-500" />,
+                    t: "Secure Payments",
+                  },
+                ].map(({ i, t }) => (
+                  <div
+                    key={t}
+                    className="flex items-center gap-2 text-sm font-semibold text-gray-500"
+                  >
+                    {i}
+                    <span>{t}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Hero Image */}
-            <div className="md:w-1/2 flex justify-center">
-              <img
-                src={groceryHero}
-                alt="Family grocery shopping"
-                style={{
-                  width: "100%",
-                  maxWidth: "480px",
-                  borderRadius: "20px",
-                  boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
-                  objectFit: "cover",
-                  height: "360px",
-                  border: "4px solid rgba(255,255,255,0.3)",
-                }}
-              />
+            <div className="md:w-1/2 flex justify-center fu2">
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-orange-400 to-red-400 rounded-[32px] opacity-20 blur-xl" />
+                <img
+                  src={groceryHero}
+                  alt="Grocery shopping"
+                  style={{
+                    width: "100%",
+                    maxWidth: 500,
+                    height: 400,
+                    objectFit: "cover",
+                    borderRadius: 28,
+                    boxShadow: "0 32px 80px rgba(249,115,22,.22)",
+                    border: "3px solid #fed7aa",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 24,
+                    left: -24,
+                    background: "#fff",
+                    borderRadius: 16,
+                    padding: "14px 18px",
+                    boxShadow: "0 12px 36px rgba(0,0,0,.13)",
+                    border: "1.5px solid #ffedd5",
+                    minWidth: 180,
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                      <Truck className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 font-semibold">
+                        Delivery Time
+                      </p>
+                      <p className="text-sm font-black text-gray-900">
+                        Under 10 mins
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 24,
+                    right: -20,
+                    background: "#fff",
+                    borderRadius: 16,
+                    padding: "12px 16px",
+                    boxShadow: "0 12px 32px rgba(0,0,0,.11)",
+                    border: "1.5px solid #ffedd5",
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
+                    <span className="font-black text-gray-900">4.9</span>
+                    <span className="text-xs text-gray-400 font-medium">
+                      / 5.0
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-0.5 font-semibold text-center">
+                    10K+ Reviews
+                  </p>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div className="relative -mb-1">
+            <svg
+              viewBox="0 0 1440 72"
+              className="w-full h-16"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0,36 C480,72 960,0 1440,36 L1440,72 L0,72 Z"
+                fill="#fff7ed"
+              />
+            </svg>
           </div>
         </section>
 
-        {/* ── Category Chips ── */}
-        <section className="py-10 px-6 bg-white border-b border-orange-100">
-          <div className="max-w-5xl mx-auto">
-            <p className="text-center text-sm font-600 text-gray-400 mb-5 uppercase tracking-widest">
+        {/* ══ CATEGORIES ══ */}
+        <section className="py-10 px-6 bg-orange-50 border-b border-orange-100">
+          <div className="max-w-5xl mx-auto text-center">
+            <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-5">
               Browse Categories
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {groceryItems.map(({ emoji, name }) => (
-                <div key={name} className="grocery-chip">
-                  <span className="text-xl">{emoji}</span>
+              {categories.map(({ icon, name }) => (
+                <div key={name} className="chip">
+                  {icon}
                   <span>{name}</span>
                 </div>
               ))}
@@ -466,56 +584,117 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── About ── */}
-        <section id="about" className="py-20 px-6 md:px-12 bg-white">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-14">
-            {/* About Image */}
-            <div className="md:w-1/2 flex justify-center">
-              <img
-                src={aboutImg}
-                alt="Fresh grocery delivery"
-                style={{
-                  width: "100%",
-                  maxWidth: "420px",
-                  borderRadius: "20px",
-                  boxShadow: "0 12px 40px rgba(0,0,0,0.12)",
-                  objectFit: "cover",
-                  height: "320px",
-                  border: "1px solid #fed7aa",
-                }}
-              />
+        {/* ══ FEATURED PRODUCTS ══ */}
+        <section
+          id="products"
+          className="py-24 px-6 md:px-12 bg-gradient-to-b from-orange-50 to-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-4">
+              <div>
+                <div className="pill mb-4">
+                  <Tag className="w-4 h-4" />
+                  FEATURED PRODUCTS
+                </div>
+                <h2
+                  className="text-4xl md:text-5xl font-black text-gray-900"
+                  style={{ fontFamily: "'Fraunces',serif" }}
+                >
+                  Today's{" "}
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-500">
+                    Fresh Picks
+                  </span>
+                </h2>
+              </div>
+              {/* <a
+                href="#"
+                className="inline-flex items-center gap-2 text-orange-600 font-bold border-b-2 border-orange-300 hover:border-orange-600 transition-colors pb-0.5 self-end"
+              >
+                View All Products <ChevronRight className="w-4 h-4" />
+              </a> */}
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+              {products.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        </section>
 
-            {/* Text */}
+        {/* ══ ABOUT ══ */}
+        <section
+          id="about"
+          className="relative py-24 px-6 md:px-14 bg-white overflow-hidden"
+        >
+          <div className="absolute top-16 left-0 w-72 h-72 bg-orange-100 rounded-full blur-3xl opacity-20 blob" />
+          <div className="absolute bottom-16 right-0 w-72 h-72 bg-red-100 rounded-full blur-3xl opacity-20 blob bd2" />
+
+          <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center gap-16">
+            <div className="md:w-1/2 flex justify-center">
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-orange-200 to-red-200 rounded-[32px] opacity-25 blur-xl" />
+                <img
+                  src={aboutImg}
+                  alt="Fresh grocery delivery"
+                  style={{
+                    width: "100%",
+                    maxWidth: 440,
+                    height: 340,
+                    objectFit: "cover",
+                    borderRadius: 28,
+                    boxShadow: "0 20px 56px rgba(249,115,22,.18)",
+                    border: "3px solid #fed7aa",
+                  }}
+                />
+              </div>
+            </div>
             <div className="md:w-1/2">
-              <span className="section-tag">🌿 ABOUT US</span>
-              <h2 className="text-3xl font-extrabold text-gray-800 mb-4">
-                Fast, Fresh & <span style={{ color: "#ff7b1d" }}>Reliable</span>
+              <div className="pill mb-6">
+                <Leaf className="w-4 h-4" />
+                ABOUT RUSHBASKETS
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-black text-gray-900 mb-6"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Fast, Fresh &{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600">
+                  Reliable
+                </span>
               </h2>
-              <p className="text-gray-600 leading-relaxed text-base mb-4">
+              <p className="text-gray-500 leading-relaxed mb-4">
                 RushBaskets is an advanced grocery e-commerce management
                 platform designed for store owners, delivery managers, and
-                admins. Control your entire operation from a single dashboard.
+                admins. Control your entire operation from a single, elegant
+                dashboard.
               </p>
-              <p className="text-gray-500 leading-relaxed text-base mb-6">
+              <p className="text-gray-400 leading-relaxed mb-9">
                 From tracking fresh produce inventory to managing customer
-                orders and analyzing sales — we make grocery management
-                effortless.
+                orders and analysing sales data — we make grocery management
+                effortless and profitable.
               </p>
-              <div className="flex flex-wrap gap-6">
+              <div className="flex flex-wrap gap-3">
                 {[
-                  { icon: "✅", text: "Verified Suppliers" },
-                  { icon: "🚚", text: "Fast Delivery" },
-                  { icon: "📦", text: "Stock Alerts" },
-                  { icon: "🛡️", text: "Secure Payments" },
-                ].map(({ icon, text }) => (
-                  <div
-                    key={text}
-                    className="flex items-center gap-2 font-semibold text-sm"
-                    style={{ color: "#ff7b1d" }}
-                  >
-                    <span className="text-xl">{icon}</span>
-                    <span className="text-gray-700">{text}</span>
+                  {
+                    i: <CheckCircle className="w-4 h-4 text-orange-500" />,
+                    t: "Verified Suppliers",
+                  },
+                  {
+                    i: <Truck className="w-4 h-4 text-orange-500" />,
+                    t: "Express Delivery",
+                  },
+                  {
+                    i: <Package className="w-4 h-4 text-orange-500" />,
+                    t: "Smart Stock Alerts",
+                  },
+                  {
+                    i: <Shield className="w-4 h-4 text-orange-500" />,
+                    t: "Secure Payments",
+                  },
+                ].map(({ i, t }) => (
+                  <div key={t} className="tbadge">
+                    {i}
+                    <span>{t}</span>
                   </div>
                 ))}
               </div>
@@ -523,145 +702,83 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Features ── */}
-        <section
-          className="py-20 px-6 md:px-12"
-          style={{ background: "#fff7ed" }}
-        >
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="section-tag">⚡ FEATURES</span>
-              <h2 className="text-3xl font-extrabold text-gray-800">
-                Our Core Features
-              </h2>
-              <p className="text-gray-500 mt-2">
-                Everything you need to run a modern grocery business
-              </p>
-            </div>
+        {/* ══ FEATURES ══ */}
+        <section className="relative py-24 px-6 md:px-14 bg-gradient-to-b from-orange-50 via-white to-orange-50 overflow-hidden">
+          <div className="absolute top-20 right-0 w-64 h-64 bg-orange-200 rounded-full blur-3xl opacity-15 blob" />
+          <div className="absolute bottom-20 left-0 w-64 h-64 bg-red-100 rounded-full blur-3xl opacity-15 blob bd4" />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map(
-                ({
-                  icon,
-                  title,
-                  desc,
-                  tags,
-                  tagColors,
-                  border,
-                  titleColor,
-                }) => (
-                  <div
-                    key={title}
-                    className="feature-card"
-                    style={{
-                      borderTopColor: border
-                        .replace("border-", "")
-                        .includes("orange")
-                        ? "#f97316"
-                        : border.includes("green")
-                          ? "#22c55e"
-                          : "#3b82f6",
-                    }}
-                  >
-                    <div className="text-5xl mb-4">{icon}</div>
-                    <h3 className={`text-xl font-bold mb-3 ${titleColor}`}>
-                      {title}
-                    </h3>
-                    <p className="text-gray-500 leading-relaxed text-sm mb-4">
-                      {desc}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag, i) => (
-                        <span
-                          key={tag}
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${tagColors[i]}`}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Stats ── */}
-        <section className="py-16 px-6" style={{ background: "#ff7b1d" }}>
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {stats.map(({ value, label }) => (
-              <div key={label} className="stat-card">
-                <div className="text-4xl font-extrabold text-white mb-1">
-                  {value}
-                </div>
-                <div className="text-orange-100 text-sm font-500">{label}</div>
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="text-center mb-16">
+              <div className="pill mb-5 justify-center">
+                <Zap className="w-4 h-4" />
+                CORE FEATURES
               </div>
-            ))}
+              <h2
+                className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Everything in One Place
+              </h2>
+              <p className="text-xl text-gray-500 max-w-xl mx-auto">
+                Tools built for modern grocery operations — powerful, fast, and
+                intuitive.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {features.map(({ icon, title, desc, tags, tc, grad }) => (
+                <div key={title} className="feat-card">
+                  <div className={`icon-wrap bg-gradient-to-br ${grad}`}>
+                    {icon}
+                  </div>
+                  <h3 className="text-xl font-black text-gray-900 mb-3">
+                    {title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-5">
+                    {desc}
+                  </p>
+                  <div className="flex gap-2 flex-wrap">
+                    {tags.map((t, i) => (
+                      <span
+                        key={t}
+                        className={`px-3 py-1 rounded-full text-xs font-bold ${tc[i]}`}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ── Fresh Picks Banner ── */}
-        <section className="py-16 px-6 md:px-12 bg-white">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10">
-              <span className="section-tag">🍃 FRESH PICKS</span>
-              <h2 className="text-3xl font-extrabold text-gray-800">
-                What We Deliver
+        {/* ══ STATS ══ */}
+        <section className="relative py-20 px-6 bg-gradient-to-r from-orange-600 via-orange-700 to-red-600 text-white overflow-hidden">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl opacity-10" />
+          <div className="absolute bottom-10 right-10 w-80 h-80 bg-orange-300 rounded-full blur-3xl opacity-10" />
+          <div className="max-w-5xl mx-auto relative z-10">
+            <div className="text-center mb-14">
+              <h2
+                className="text-3xl sm:text-5xl font-black mb-4"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Trusted by Businesses Worldwide
               </h2>
-              <p className="text-gray-500 mt-2 text-sm">
-                Quality products across all grocery categories
+              <p className="text-orange-100 text-lg max-w-xl mx-auto">
+                Thousands of stores already growing with{" "}
+                <strong className="text-white">RushBaskets</strong>
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-              {[
-                {
-                  emoji: "🥦🥕🌽",
-                  label: "Fresh Vegetables",
-                  bg: "#f0fdf4",
-                  border: "#bbf7d0",
-                  text: "#15803d",
-                },
-                {
-                  emoji: "🍎🍌🍊",
-                  label: "Seasonal Fruits",
-                  bg: "#fff7ed",
-                  border: "#fed7aa",
-                  text: "#c2410c",
-                },
-                {
-                  emoji: "🥛🧀🧈",
-                  label: "Dairy & Eggs",
-                  bg: "#eff6ff",
-                  border: "#bfdbfe",
-                  text: "#1d4ed8",
-                },
-
-                {
-                  emoji: "🌾🍞🥐",
-                  label: "Bakery & Grains",
-                  bg: "#fffbeb",
-                  border: "#fde68a",
-                  text: "#b45309",
-                },
-                {
-                  emoji: "🧴🧼🪥",
-                  label: "Personal Care",
-                  bg: "#fdf4ff",
-                  border: "#e9d5ff",
-                  text: "#7e22ce",
-                },
-              ].map(({ emoji, label, bg, border, text }) => (
-                <div
-                  key={label}
-                  className="rounded-2xl p-6 text-center"
-                  style={{ background: bg, border: `1px solid ${border}` }}
-                >
-                  <div className="text-4xl mb-3">{emoji}</div>
-                  <div
-                    className="font-semibold text-sm"
-                    style={{ color: text }}
-                  >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stats.map(({ value, label, icon }) => (
+                <div key={label} className="stat-card">
+                  <div className="flex justify-center mb-3 text-orange-200">
+                    {icon}
+                  </div>
+                  <div className="text-4xl sm:text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-amber-300">
+                    {value}
+                  </div>
+                  <div className="text-orange-100 text-xs font-bold uppercase tracking-widest">
                     {label}
                   </div>
                 </div>
@@ -670,52 +787,145 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Download ── */}
+        {/* ══ FAQ ══ */}
+        <section className="relative py-24 px-6 md:px-14 bg-white overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-orange-50 rounded-full blur-3xl opacity-60 blob" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-amber-50 rounded-full blur-3xl opacity-60 blob bd2" />
+
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="text-center mb-14">
+              <div className="pill mb-5 justify-center">
+                <HeartHandshake className="w-4 h-4" />
+                FAQ
+              </div>
+              <h2
+                className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+                style={{ fontFamily: "'Fraunces',serif" }}
+              >
+                Frequently Asked{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-500">
+                  Questions
+                </span>
+              </h2>
+              <p className="text-gray-500 text-lg max-w-xl mx-auto">
+                Everything you need to know about RushBaskets — quick answers,
+                zero confusion.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {faqs.map((faq, i) => (
+                <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
+              ))}
+            </div>
+
+            {/* still have questions strip */}
+            <div
+              className="mt-14 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6"
+              style={{
+                background: "linear-gradient(135deg,#fff7ed,#ffedd5)",
+                border: "1.5px solid #fed7aa",
+              }}
+            >
+              <div>
+                <p
+                  className="font-black text-gray-900 text-xl mb-1"
+                  style={{ fontFamily: "'Fraunces',serif" }}
+                >
+                  Still have questions?
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Our support team is here for you 24/7.
+                </p>
+              </div>
+              <button
+                onClick={() => navigate("/contact")}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold px-6 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all hover:scale-105 shadow-lg whitespace-nowrap"
+              >
+                <PhoneCall className="w-4 h-4" />
+                Contact Support
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ══ DOWNLOAD ══ */}
         <section
           id="download"
-          className="py-20 px-6 text-center"
-          style={{
-            background: "linear-gradient(135deg, #ff7b1d 0%, #c2410c 100%)",
-          }}
+          className="relative py-28 px-6 text-center overflow-hidden bg-gradient-to-br from-orange-500 via-orange-600 to-red-600"
         >
-          <div className="max-w-3xl mx-auto">
-            <div className="text-5xl mb-4">📱</div>
-            <h2 className="text-4xl font-extrabold text-white mb-4">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl opacity-10 blob" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-red-300 rounded-full blur-3xl opacity-10 blob bd2" />
+          <div className="max-w-2xl mx-auto relative z-10">
+            <div
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-8 text-sm font-black text-orange-100"
+              style={{
+                background: "rgba(0,0,0,.2)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              <Smartphone className="w-4 h-4" />
+              MOBILE APP
+            </div>
+            <h2
+              className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight"
+              style={{ fontFamily: "'Fraunces',serif" }}
+            >
               Download the RushBaskets App
             </h2>
-            <p className="text-orange-100 mb-8 text-lg">
-              Manage your grocery store on the go — orders, stock, deliveries
-              and more.
+            <p className="text-orange-100 mb-10 text-lg">
+              Manage orders, stock &amp; deliveries on the go — available free
+              on Play Store.
             </p>
             <a
               href="https://play.google.com/store/games?hl=en_IN"
-              className="btn-primary text-lg px-10 py-4 inline-flex"
+              className="group inline-flex items-center gap-3 bg-white text-orange-600 font-black text-xl px-10 py-5 rounded-2xl shadow-2xl hover:bg-orange-50 transition-all hover:scale-110"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M3.18 23.76c.3.17.64.24.99.24.5 0 1.01-.16 1.44-.47L17.5 16l-3.36-3.36L3.18 23.76zM20.49 10.06l-2.76-1.6-3.71 3.71 3.71 3.71 2.79-1.62c.8-.46 1.28-1.28 1.28-2.1-.01-.83-.49-1.64-1.31-2.1zM1.04.32C.98.5.96.71.96.93v22.14c0 .22.02.43.08.62l.12.12 12.41-12.4v-.3L1.16.2 1.04.32zM5.62.47L17.5 8l-3.36 3.36L2.61.28c.43-.31.95-.47 1.44-.47.35 0 .69.08.99.24l.58.42z" />
               </svg>
               Get it on Play Store
+              <Rocket className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
+            <div className="mt-9 flex flex-wrap justify-center gap-8 text-orange-100 text-sm font-semibold">
+              {[
+                [<Shield className="w-4 h-4" />, "Free Download"],
+                [<CheckCircle className="w-4 h-4" />, "No Hidden Fees"],
+                [<Star className="w-4 h-4 fill-current" />, "4.9 Rated"],
+              ].map(([ic, txt]) => (
+                <div key={txt} className="flex items-center gap-2">
+                  {ic}
+                  <span>{txt}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ── Contact CTA ── */}
-        <section className="py-20 px-6 text-center bg-white">
-          <div className="max-w-2xl mx-auto">
-            <div className="text-4xl mb-3">🤝</div>
-            <h2 className="text-3xl font-extrabold text-gray-800 mb-3">
+        {/* ══ CONTACT ══ */}
+        <section className="relative py-24 px-6 text-center bg-gradient-to-b from-white to-orange-50 overflow-hidden">
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-orange-100 rounded-full blur-3xl opacity-25 blob" />
+          <div className="max-w-xl mx-auto relative z-10">
+            <div className="pill mb-7 justify-center">
+              <HeartHandshake className="w-4 h-4" />
+              GET IN TOUCH
+            </div>
+            <h2
+              className="text-4xl md:text-5xl font-black text-gray-900 mb-5"
+              style={{ fontFamily: "'Fraunces',serif" }}
+            >
               Need Help?
             </h2>
-            <p className="text-gray-500 mb-8 leading-relaxed">
-              Get in touch with our support team. We're available 24/7 to help
-              you manage your grocery operations seamlessly.
+            <p className="text-gray-500 mb-10 leading-relaxed text-lg">
+              Our support team is available 24/7 to help you manage your grocery
+              operations seamlessly.
             </p>
             <button
               onClick={() => navigate("/contact")}
-              className="btn-primary"
-              style={{ background: "#ff7b1d", color: "#fff" }}
+              className="group inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-red-600 text-white font-black text-lg px-10 py-5 rounded-2xl shadow-2xl hover:from-orange-700 hover:to-red-700 hover:scale-105 transition-all"
             >
-              Contact Us →
+              <span>Contact Us</span>
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </section>
