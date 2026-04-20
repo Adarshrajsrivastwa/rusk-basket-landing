@@ -272,6 +272,21 @@ export default function Contact() {
           background-clip:text; animation:shimmerSlide 3s linear infinite;
         }
 
+        /* company name badge in hero */
+        .company-badge {
+          display:inline-flex; align-items:center; gap:8px;
+          background:rgba(255,255,255,.15); backdrop-filter:blur(8px);
+          border:1.5px solid rgba(255,255,255,.4);
+          border-radius:9999px; padding:6px 18px;
+          font-size:.8rem; font-weight:900; letter-spacing:.1em;
+          color:#fff; text-transform:uppercase;
+        }
+        .company-badge-dot {
+          width:7px; height:7px; border-radius:50%;
+          background:#fde68a; flex-shrink:0;
+          box-shadow:0 0 6px #fde68a;
+        }
+
         /* icon wrap */
         .icon-wrap {
           display:inline-flex; align-items:center; justify-content:center;
@@ -399,6 +414,22 @@ export default function Contact() {
           transition:all .25s;
         }
         .btn-outline:hover { background:rgba(255,255,255,.12); border-color:#fff; }
+
+        /* company name strip under form heading */
+        .company-name-strip {
+          display:inline-flex; align-items:center; gap:8px;
+          background:linear-gradient(90deg,#fff7ed,#ffedd5);
+          border:1.5px solid #fed7aa; border-radius:10px;
+          padding:6px 14px; margin-bottom:10px;
+        }
+        .company-name-strip span {
+          font-size:.72rem; font-weight:900; letter-spacing:.1em;
+          color:#c2410c; text-transform:uppercase;
+        }
+        .company-name-strip-dot {
+          width:6px; height:6px; border-radius:50%;
+          background:#f97316; flex-shrink:0;
+        }
       `}</style>
 
       <div className="text-gray-800">
@@ -414,12 +445,21 @@ export default function Contact() {
           <div className="absolute bottom-8 right-8 w-96 h-96 bg-white rounded-full blur-3xl opacity-10 blob-anim bd2" />
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
+            {/* ── COMPANY NAME BADGE (added) ── */}
+            <div className="flex justify-center mb-4 anim-slideDown d0">
+              <div className="company-badge">
+                <div className="company-badge-dot" />
+                Rush Baskets Groser
+              </div>
+            </div>
+
             <div
-              className="pill mb-6 justify-center anim-slideDown d0"
+              className="pill mb-6 justify-center anim-slideDown"
               style={{
                 background: "rgba(255,255,255,.2)",
                 color: "#fff",
                 border: "1.5px solid rgba(255,255,255,.35)",
+                animationDelay: ".08s",
               }}
             >
               <MessageCircle className="w-4 h-4" />
@@ -489,6 +529,13 @@ export default function Contact() {
                   Information
                 </span>
               </h2>
+              {/* ── COMPANY NAME under section heading (added) ── */}
+              <p
+                className="text-gray-600 text-base font-black tracking-widest uppercase mb-2"
+                style={{ letterSpacing: ".12em" }}
+              >
+                Rush Baskets Groser
+              </p>
               <p className="text-gray-500 text-lg font-medium">
                 Choose your preferred way to connect
               </p>
@@ -551,6 +598,12 @@ export default function Contact() {
               className={`lg:col-span-3 ${visible.form ? "anim-slideLeft d0" : "opacity-0"}`}
             >
               <div className="form-card">
+                {/* ── COMPANY NAME inside form card (added) ── */}
+                <div className="company-name-strip">
+                  <div className="company-name-strip-dot" />
+                  <span>Rush Baskets Groser</span>
+                </div>
+
                 <div className="pill mb-4">
                   <Send className="w-4 h-4" />
                   SEND A MESSAGE
@@ -961,6 +1014,14 @@ export default function Contact() {
           <div className="absolute bottom-0 right-10 w-80 h-80 bg-yellow-300 rounded-full blur-3xl opacity-10 blob-anim bd2" />
 
           <div className="max-w-3xl mx-auto relative z-10">
+            {/* ── COMPANY NAME in CTA footer (added) ── */}
+            <div className="flex justify-center mb-5">
+              <div className="company-badge">
+                <div className="company-badge-dot" />
+                Rush Baskets Groser
+              </div>
+            </div>
+
             <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-6 anim-float">
               <Smartphone className="w-10 h-10 text-white" />
             </div>

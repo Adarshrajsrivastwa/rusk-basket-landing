@@ -68,34 +68,38 @@ export default function Footer() {
           background: rgba(255,255,255,0.15);
           border: 1px solid rgba(255,255,255,0.25);
           border-radius: 9999px;
-          padding: 4px 12px;
-          font-size: 0.7rem;
-          color: #bfdbfe;
+          padding: 5px 12px;
+          font-size: 0.75rem;
           display: inline-flex;
           align-items: center;
-          gap: 5px;
+          gap: 6px;
         }
 
         .footer-link {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
+          font-size: 0.85rem;
           transition: 0.3s;
         }
+
         .footer-link:hover {
-          transform: translateX(5px);
+          transform: translateX(4px);
           color: #bfdbfe !important;
         }
 
         .social-btn {
+          width: 34px;
+          height: 34px;
+          font-size: 15px;
           transition: 0.3s;
         }
+
         .social-btn:hover {
-          transform: translateY(-6px) scale(1.1);
+          transform: translateY(-5px) scale(1.1);
         }
 
         .divider {
-          width: 100%;
           height: 1px;
           background: rgba(255,255,255,0.2);
         }
@@ -103,17 +107,17 @@ export default function Footer() {
 
       <footer className="footer-blue footer-font text-blue-100 pt-10 pb-5 mt-10">
         <div className="max-w-7xl mx-auto px-6">
-          {/* Logo */}
-          <div className="text-center mb-8">
+          {/* Logo Section */}
+          <div className="text-center mb-6">
             <img
               src={logo}
               alt="RushBaskets Logo"
               style={{
-                height: "75px",
-                width: "240px",
+                height: "80px",
+                width: "250px",
                 objectFit: "contain",
                 background: "#fff",
-                borderRadius: "12px",
+                borderRadius: "10px",
                 padding: "6px",
               }}
             />
@@ -122,7 +126,7 @@ export default function Footer() {
               Fast, fresh & reliable grocery delivery
             </p>
 
-            <div className="flex flex-wrap justify-center gap-2 mt-3">
+            <div className="flex flex-wrap justify-center gap-2 mt-2">
               {featurePills.map(({ icon, label }) => (
                 <span key={label} className="badge-pill">
                   {icon} {label}
@@ -131,12 +135,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Grid Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {/* About */}
             <div>
-              <h3 className="font-bold mb-3 text-blue-200">About Us</h3>
-              <p className="text-xs text-blue-100">
+              <h3 className="font-bold mb-2 text-blue-200 text-sm">About Us</h3>
+              <p className="text-sm text-blue-100">
                 RushBaskets helps manage grocery operations seamlessly — from
                 orders to delivery.
               </p>
@@ -144,8 +148,10 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="font-bold mb-3 text-blue-200">Quick Links</h3>
-              <ul className="space-y-2 text-xs">
+              <h3 className="font-bold mb-2 text-blue-200 text-sm">
+                Quick Links
+              </h3>
+              <ul className="space-y-1">
                 {quickLinks.map(({ to, label, icon }) => (
                   <li key={to}>
                     <Link to={to} className="footer-link text-blue-100">
@@ -158,8 +164,8 @@ export default function Footer() {
 
             {/* Explore */}
             <div>
-              <h3 className="font-bold mb-3 text-blue-200">Explore</h3>
-              <ul className="space-y-2 text-xs">
+              <h3 className="font-bold mb-2 text-blue-200 text-sm">Explore</h3>
+              <ul className="space-y-1">
                 {exploreLinks.map(({ to, label, icon }) => (
                   <li key={to}>
                     <Link to={to} className="footer-link text-blue-100">
@@ -172,24 +178,24 @@ export default function Footer() {
 
             {/* Contact + QR */}
             <div className="text-center lg:text-left">
-              <p className="text-xs mb-2 text-blue-200">Scan to Download App</p>
+              <p className="text-sm mb-1 text-blue-200">Scan to Download App</p>
 
               <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://play.google.com/store/apps"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://play.google.com/store/apps"
                 alt="QR Code"
-                className="mx-auto lg:mx-0 mb-3 bg-white p-2 rounded-lg"
+                className="mx-auto lg:mx-0 mb-2 bg-white p-2 rounded-lg"
               />
 
-              <p className="text-xs mb-2 flex items-center justify-center lg:justify-start gap-2">
+              <p className="text-sm mb-1 flex items-center justify-center lg:justify-start gap-2">
                 <FaEnvelope /> info.rushbaskets@gmail.com
               </p>
 
-              <div className="flex gap-2 justify-center lg:justify-start mt-3">
+              <div className="flex gap-2 justify-center lg:justify-start mt-2">
                 {socialLinks.map(({ icon, name, color, link }) => (
                   <a
                     key={name}
                     href={link}
-                    className="social-btn w-8 h-8 flex items-center justify-center rounded-full text-white"
+                    className="social-btn flex items-center justify-center rounded-full text-white"
                     style={{ background: color }}
                   >
                     {icon}
@@ -200,26 +206,22 @@ export default function Footer() {
           </div>
 
           {/* Divider */}
-          <div className="divider mb-4"></div>
+          <div className="divider mb-3"></div>
 
           {/* Bottom Bar */}
           <div className="text-center text-xs footer-body-font text-blue-200">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-              <span className="flex items-center gap-2">
-                <span className="font-bold text-sm">RushBaskets</span>
-                <span className="text-blue-400">|</span>
-              </span>
+              <span className="font-bold text-sm">Rush Baskets Groser</span>
               <span>2024 © All Rights Reserved</span>
-              <span className="text-blue-400 hidden sm:inline">|</span>
-              <span className="inline-flex items-center gap-1">
+              <span className="flex items-center gap-1">
                 Made with <FaHeart /> by{" "}
                 <a
                   href="https://www.softfyr.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white underline underline-offset-2"
+                  className="hover:text-white underline"
                 >
-                  SoftFYR Labs
+                  SoftFYR Technologies
                 </a>
               </span>
             </div>

@@ -409,6 +409,32 @@ export default function Home() {
           transition:background .3s, transform .3s;
         }
         .stat-card:hover { background:rgba(255,255,255,.25); transform:translateY(-5px); }
+
+        /* ── company badge (hero) ── */
+        .company-badge {
+          display:inline-flex; align-items:center; gap:8px;
+          background:#fff7ed; color:#c2410c;
+          border:1.5px solid #fed7aa; border-radius:9999px;
+          padding:6px 18px; font-size:.75rem; font-weight:900;
+          letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px;
+        }
+        .company-badge-dot {
+          width:7px; height:7px; border-radius:50%;
+          background:#f97316; flex-shrink:0;
+        }
+
+        /* ── company badge (dark/CTA sections) ── */
+        .company-badge-dark {
+          display:inline-flex; align-items:center; gap:8px;
+          background:rgba(255,255,255,.15); backdrop-filter:blur(8px);
+          border:1.5px solid rgba(255,255,255,.4); border-radius:9999px;
+          padding:6px 18px; font-size:.75rem; font-weight:900;
+          letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:20px;
+        }
+        .company-badge-dark-dot {
+          width:7px; height:7px; border-radius:50%;
+          background:#fde68a; flex-shrink:0; box-shadow:0 0 6px #fde68a;
+        }
       `}</style>
 
       <div className="text-gray-800">
@@ -420,10 +446,16 @@ export default function Home() {
 
           <div className="max-w-7xl mx-auto px-6 md:px-14 py-24 relative z-10 flex flex-col md:flex-row items-center gap-14">
             <div className="md:w-1/2 fu">
-              <div className="pill mb-7">
+              {/* ── COMPANY NAME BADGE (added) ── */}
+              <div className="company-badge">
+                <div className="company-badge-dot" />
+                Rush Baskets Groser
+              </div>
+
+              {/* <div className="pill mb-7">
                 <ShoppingCart className="w-4 h-4" />
                 GROCERY MANAGEMENT PLATFORM
-              </div>
+              </div> */}
               <h1
                 className="text-5xl md:text-6xl font-black leading-[1.08] mb-6 text-gray-900"
                 style={{ fontFamily: "'Fraunces',serif" }}
@@ -605,13 +637,14 @@ export default function Home() {
                     Fresh Picks
                   </span>
                 </h2>
+                {/* ── COMPANY NAME under Products heading (added) ── */}
+                <p
+                  className="mt-2 text-xs font-black uppercase tracking-widest text-orange-400"
+                  style={{ letterSpacing: ".12em" }}
+                >
+                  Rush Baskets Groser
+                </p>
               </div>
-              {/* <a
-                href="#"
-                className="inline-flex items-center gap-2 text-orange-600 font-bold border-b-2 border-orange-300 hover:border-orange-600 transition-colors pb-0.5 self-end"
-              >
-                View All Products <ChevronRight className="w-4 h-4" />
-              </a> */}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
               {products.map((p) => (
@@ -651,7 +684,7 @@ export default function Home() {
             <div className="md:w-1/2">
               <div className="pill mb-6">
                 <Leaf className="w-4 h-4" />
-                ABOUT RUSHBASKETS
+                ABOUT RUSH BASKETS GROSER
               </div>
               <h2
                 className="text-4xl md:text-5xl font-black text-gray-900 mb-6"
@@ -758,6 +791,13 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-80 h-80 bg-orange-300 rounded-full blur-3xl opacity-10" />
           <div className="max-w-5xl mx-auto relative z-10">
             <div className="text-center mb-14">
+              {/* ── COMPANY NAME in stats (added) ── */}
+              <div className="flex justify-center mb-4">
+                <div className="company-badge-dark">
+                  <div className="company-badge-dark-dot" />
+                  Rush Baskets Groser
+                </div>
+              </div>
               <h2
                 className="text-3xl sm:text-5xl font-black mb-4"
                 style={{ fontFamily: "'Fraunces',serif" }}
@@ -766,7 +806,7 @@ export default function Home() {
               </h2>
               <p className="text-orange-100 text-lg max-w-xl mx-auto">
                 Thousands of stores already growing with{" "}
-                <strong className="text-white">RushBaskets</strong>
+                <strong className="text-white">Rush Baskets Groser</strong>
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -857,6 +897,14 @@ export default function Home() {
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl opacity-10 blob" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-red-300 rounded-full blur-3xl opacity-10 blob bd2" />
           <div className="max-w-2xl mx-auto relative z-10">
+            {/* ── COMPANY NAME in download section (added) ── */}
+            <div className="flex justify-center mb-2">
+              <div className="company-badge-dark">
+                <div className="company-badge-dark-dot" />
+                Rush Baskets Groser
+              </div>
+            </div>
+
             <div
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-8 text-sm font-black text-orange-100"
               style={{
@@ -878,7 +926,7 @@ export default function Home() {
               on Play Store.
             </p>
             <a
-              href="https://play.google.com/store/games?hl=en_IN"
+              href="https://play.google.com/store/search?q=rushbaskets&c=apps&hl=en_IN"
               className="group inline-flex items-center gap-3 bg-white text-orange-600 font-black text-xl px-10 py-5 rounded-2xl shadow-2xl hover:bg-orange-50 transition-all hover:scale-110"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
